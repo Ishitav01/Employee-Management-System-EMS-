@@ -1,10 +1,10 @@
-package com.ems.employee;
+package com.ems;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EmployeeBackendApplicationTests {
+class EmployeeManagementApplicationTests {
 
 	@Test
 	void contextLoads() {
