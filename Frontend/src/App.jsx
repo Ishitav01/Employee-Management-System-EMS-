@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Suspense, lazy } from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import LoginPage from './pages/LoginPage'
-import Dashboard from './pages/Dashboard'
+import LoadingPage from './components/LoadingPage'
+
+const DashboardPage = lazy(() => import('../src/pages/Dashboard'))
 
 function App() {
 
@@ -11,13 +11,16 @@ function App() {
     {
     path : "/",
     element : 
-    // <Suspend>
+      <Suspense fallback={<LoadingPage />}>
       <LoginPage />
-      // </Suspend>
+      </Suspense>
     },
     {
       path : "/dashboard",
-      element : <Dashboard />
+      element : 
+      <Suspense fallback={<LoadingPage />}>
+      <DashboardPage />
+      </Suspense>
     }
   ])
 
