@@ -1,5 +1,5 @@
 // Dashboard.jsx
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -17,6 +17,7 @@ import {
   TablePagination
 } from "@mui/material";
 import "../styles/Dashboard.css";
+import useDebounce from "../hooks/useDebounce";
 
 export default function Dashboard() {
   const initialEmployees = [
@@ -45,17 +46,18 @@ export default function Dashboard() {
   const [employees] = useState(initialEmployees);
   const [searchField, setSearchField] = useState("name");
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebounce(searchQuery,500);
 
   // Pagination state
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
 
   const filtered = useMemo(() => {
-    if (!searchQuery) return employees;
+    if (!debouncedSearchQuery) return employees;
     return employees.filter((emp) =>
-      String(emp[searchField]).toLowerCase().includes(searchQuery.toLowerCase())
+      String(emp[searchField]).toLowerCase().includes(debouncedSearchQuery.toLowerCase())
     );
-  }, [employees, searchField, searchQuery]);
+  }, [employees, searchField, debouncedSearchQuery]);
 
   // Slice the filtered results for current page
   const visibleRows = useMemo(() => {

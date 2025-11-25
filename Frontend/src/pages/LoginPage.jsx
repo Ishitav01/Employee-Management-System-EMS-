@@ -7,9 +7,12 @@ import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {useForm} from "react-hook-form"
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
     const [login, setLogin] = useState(true);
+
+    const navigate = useNavigate();
 
     const handleLoginChange = () => {
         setValue("email","");
@@ -21,6 +24,7 @@ export default function LoginPage() {
 
   const handleLogin = (data) => {
   console.log("Form Submitted:", data);
+  navigate("/dashboard");
 };
 
 
