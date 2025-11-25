@@ -1,36 +1,35 @@
 .login-page {
     width: 100%;
-    min-height: 100vh;
+    min-height: 100vh;   /* full screen height but scrollable */
     background-image: url("https://www.shutterstock.com/image-photo/corporate-data-management-system-dms-260nw-338687519.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 0;
-    overflow-y: auto;
+    padding-top: 40px;    /* gives some spacing */
+    padding-bottom: 40px;
+    overflow-y: auto;     /* allows scrolling if form grows */
+    position: relative;   /* replaces fixed */
 }
-
 .login-card {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    box-shadow: 15px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
+    margin: 40px auto;
+    justify-content: space-between;
     padding: 30px;
     color: black;
     gap: 20px;
-    width: 90%;
-    max-width: 400px;
+    width: 30%;
     background-color: rgba(255, 255, 255, 0.9);
 }
 
-.login-button {
-    background-color: #50c7c7 !important;
-    color: white !important;
+.login-button{
+    background-color: #50c7c7;
+    color: white;
 }
 
-.login-header {
+.login-header{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -38,7 +37,7 @@
     margin-bottom: 10px;
 }
 
-.login-header .icon {
+.login-header .icon{
     width: 20%;
     height: 20%;
     color: teal;

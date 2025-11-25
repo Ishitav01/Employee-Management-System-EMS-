@@ -6,34 +6,34 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { useForm } from "react-hook-form"
+import {useForm} from "react-hook-form"
 
 export default function LoginPage() {
     const [login, setLogin] = useState(true);
 
     const handleLoginChange = () => {
-        setValue("email", "");
-        setValue("name", "");
-        setValue("password", "");
-        setValue("designation", "");
+        setValue("email","");
+        setValue("name","");
+        setValue("password","");
+        setValue("designation","");
         setLogin(prevState => !prevState);
     }
 
-    const handleLogin = (data) => {
-        console.log("Form Submitted:", data);
-    };
+  const handleLogin = (data) => {
+  console.log("Form Submitted:", data);
+};
 
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        setValue,
-        watch,
-        reset
-    } = useForm();
+      const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+    reset
+  } = useForm();
 
-
+  
     return (
         <div className='login-page'>
             <div className='login-card'>
@@ -46,16 +46,16 @@ export default function LoginPage() {
                 </Box>
                 {
                     !login && <Box>
-                        <TextField fullWidth id="outlined-basic" label="Name" variant="outlined"
-                            {...register("name", {
-                                required: "Name is required",
-                                minLength: {
-                                    value: 3,
-                                    message: "Name should be at least 3 characters",
-                                },
-                            })}
-                            error={!!errors.name}
-                            helperText={errors.name?.message} />
+                        <TextField fullWidth id="outlined-basic" label="Name" variant="outlined" 
+                        {...register("name", {
+                required: "Name is required",
+                minLength: {
+                  value: 3,
+                  message: "Name should be at least 3 characters",
+                },
+              })}
+              error={!!errors.name}
+              helperText={errors.name?.message}/>
                         <TextField
                             select
                             label="Designation"
@@ -63,10 +63,10 @@ export default function LoginPage() {
                             margin="normal"
                             InputLabelProps={{ shrink: true }}
                             {...register("designation", {
-                                required: "Designation is required"
-                            })}
-                            error={!!errors.designation}
-                            helperText={errors.designation?.message}
+                required: "Designation is required"
+              })}
+              error={!!errors.designation}
+              helperText={errors.designation?.message}
                         >
                             <MenuItem value="HR">HR</MenuItem>
                             <MenuItem value="Developer">Developer</MenuItem>
@@ -87,18 +87,18 @@ export default function LoginPage() {
                     error={!!errors.email}
                     helperText={errors.email?.message} />
                 <TextField id="outlined-basic" label="Password" variant="outlined" type='password' {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                        value: 6,
-                        message: "Password must be at least 6 characters",
-                    },
-                    pattern: {
-                        value: /^(?=.*[A-Z])(?=.*\d).+$/,
-                        message: "Must contain 1 uppercase letter & 1 number",
-                    },
-                })}
-                    error={!!errors.password}
-                    helperText={errors.password?.message} />
+            required: "Password is required",
+            minLength: {
+              value: 6,
+              message: "Password must be at least 6 characters",
+            },
+            pattern: {
+              value: /^(?=.*[A-Z])(?=.*\d).+$/,
+              message: "Must contain 1 uppercase letter & 1 number",
+            },
+          })}
+          error={!!errors.password}
+          helperText={errors.password?.message}/>
                 {
                     login ? <Typography color={"primary"} sx={{ cursor: "pointer" }} onClick={handleLoginChange} variant="caption">Not a member? Sign up now!</Typography> : <Typography sx={{ cursor: "pointer" }} variant="caption" color={"primary"} onClick={handleLoginChange}>Already a member? Sign in</Typography>
                 }
