@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import LoginPage from './pages/LoginPage'
+import Dashboard from './pages/Dashboard'
 
 function App() {
 
@@ -13,6 +14,10 @@ function App() {
     // <Suspend>
       <LoginPage />
       // </Suspend>
+    },
+    {
+      path : "/dashboard",
+      element : <Dashboard />
     }
   ])
 

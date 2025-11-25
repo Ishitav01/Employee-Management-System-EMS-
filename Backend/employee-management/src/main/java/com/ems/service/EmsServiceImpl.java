@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ems.entity.Employee;
 import com.ems.exceptions.EmployeeNotFoundException;
 import com.ems.repository.EmsRepository;
 
-
+@Service
 public class EmsServiceImpl implements EmsService {
 
     @Autowired
