@@ -1,13 +1,24 @@
-// import './App.css'
-import Dashboard from './pages/Dashboard'
-import EmployeeDashboard from './pages/Dashboard'
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import LoginPage from './pages/LoginPage'
 
 function App() {
-  
+
+  const appRouter = createBrowserRouter([
+    {
+    path : "/",
+    element : 
+    // <Suspend>
+      <LoginPage />
+      // </Suspend>
+    }
+  ])
 
   return (
     <>
-      <Dashboard/>
+      <RouterProvider router={appRouter}/>
     </>
   )
 }
