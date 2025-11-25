@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,27 +17,27 @@ import com.ems.service.EmsService;
 
 
 @RestController
-@RequestMapping("/api") 
+@RequestMapping("/api/employees") 
 public class EmsController {
     @Autowired
     private EmsService emsService;
 
-    @GetMapping("/employees/")
+    @GetMapping
     public List<Employee> getAllEmployees() {
         return emsService.getAllEmployees();
     }
 
-    @PostMapping("/employees/")
-    public void addEmployee(@RequestParam Employee employee) {
+    @PostMapping
+    public void addEmployee(@RequestBody Employee employee) {
         emsService.addEmployee(employee);
     }
 
-    @PutMapping("/employees/")
-    public void updateEmployee(@RequestParam Employee employee) {
+    @PutMapping
+    public void updateEmployee(@RequestBody Employee employee) {
         emsService.updateEmployee(employee);
     }
 
-    @DeleteMapping("/employees/")
+    @DeleteMapping
     public void deleteEmployee(@RequestParam int id) {
         emsService.deleteEmployee(id);
     }
