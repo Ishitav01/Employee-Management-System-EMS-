@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ems.utility.JwtUtil;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 public class AdminController {
 
     @GetMapping("/login/admin")

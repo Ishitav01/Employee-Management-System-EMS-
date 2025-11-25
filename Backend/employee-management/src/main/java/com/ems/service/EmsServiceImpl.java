@@ -22,6 +22,7 @@ public class EmsServiceImpl implements EmsService {
         .orElseThrow(() -> new EmployeeNotFoundException("Employee object is null"));
 
         emsRepository.save(employee);
+        System.out.println("Employee added successfully");
     }
 
     @Override
