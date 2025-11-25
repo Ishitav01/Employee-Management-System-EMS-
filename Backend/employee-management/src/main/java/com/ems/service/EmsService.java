@@ -2,11 +2,8 @@ package com.ems.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import com.ems.entity.Employee;
 
-@Service
 public interface EmsService {
     public void addEmployee(Employee employee);
     public List<Employee> getAllEmployees();
