@@ -49,7 +49,7 @@ export default function LoginPage() {
                     <Typography variant='h5' >Employee Management System</Typography>
                 </Box>
                 {
-                    !login && <Box>
+                    !login && <>
                         <TextField fullWidth id="outlined-basic" label="Name" variant="outlined" 
                         {...register("name", {
                 required: "Name is required",
@@ -78,7 +78,7 @@ export default function LoginPage() {
                             <MenuItem value="Designer">Designer</MenuItem>
                             <MenuItem value="Sales">Sales</MenuItem>
                         </TextField>
-                    </Box>
+                    </>
                 }
                 <TextField id="outlined-basic" label="Email" variant="outlined"
                     {...register("email", {
