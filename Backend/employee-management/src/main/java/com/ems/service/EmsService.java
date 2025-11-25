@@ -8,7 +8,7 @@ import com.ems.entity.Employee;
 
 @Service
 public interface EmsService {
-    public void addEmployee();
+    public void addEmployee(Employee employee);
     public List<Employee> getAllEmployees();
     public Employee getEmployeeById(int id);
     public void updateEmployee(Employee employee);

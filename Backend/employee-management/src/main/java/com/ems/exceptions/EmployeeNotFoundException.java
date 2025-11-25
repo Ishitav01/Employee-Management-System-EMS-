@@ -1,13 +1,13 @@
 package com.ems.exceptions;
 
-public class EmployeeNotFound extends RuntimeException {
+public class EmployeeNotFoundException extends RuntimeException {
     String message;
 
-    public EmployeeNotFound(String message) {
+    public EmployeeNotFoundException(String message) {
         this.message = message;
     }
 
-    public EmployeeNotFound() {
+    public EmployeeNotFoundException() {
         this.message = "Employee Not Found";
     }
 
