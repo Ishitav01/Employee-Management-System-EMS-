@@ -4,7 +4,7 @@ import SearchOffIcon from "@mui/icons-material/SearchOff";
 
 export default function NoEmployeeFound({ onAddEmployee }) {
   return (
-    <Box className="nmf-container">
+    <Box className="nef-container">
       <SearchOffIcon className="search-off-icon" />
 
       <Typography variant="h5" sx={{ fontWeight: 600 }}>
