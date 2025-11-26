@@ -61,7 +61,7 @@ export default function AddEditEmployee({ open, handleClose, data }) {
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-      <DialogTitle>
+      <DialogTitle className="dialog-title">
         {isEdit ? "Update Employee" : "Add Employee"}
       </DialogTitle>
 

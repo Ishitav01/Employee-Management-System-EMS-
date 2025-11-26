@@ -25,6 +25,7 @@ export default function LoginPage() {
         setValue("password", "");
         setValue("designation", "");
         setLogin(prevState => !prevState);
+        reset();
     }
 
     const handleLogin = (data) => {
@@ -40,7 +41,8 @@ export default function LoginPage() {
         formState: { errors },
         setValue,
         watch,
-        reset
+        reset,
+        setError
     } = useForm();
 
 

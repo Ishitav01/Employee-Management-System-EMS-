@@ -16,7 +16,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 20px;
-  background-color: var(--teal-500);
+  background: linear-gradient(150deg, #004e92, #000428, #6a11cb);
   color: white;
   z-index: 2000;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
@@ -53,8 +53,8 @@
 }
 
 .btn-add {
-  background-color: var(--teal-500) !important;
-  color: white !important;
+  background-color: #4c2fb3;
+  color: white;
 }
 
 .table-container {
@@ -69,8 +69,8 @@
 
 
 .btn-edit{
-  border-color: var(--teal-500) !important;
-  color: var(--teal-500) !important;
+  background-color: #4c2fb3;
+  color: white;
   width: 45%;
 }
 
