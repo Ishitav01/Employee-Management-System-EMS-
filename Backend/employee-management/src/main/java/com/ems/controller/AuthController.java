@@ -10,11 +10,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.ems.entity.AppUser;
 import com.ems.repository.UserRepository;
 import com.ems.service.UserService;
 import com.ems.utility.JwtUtil;
+
+import lombok.Data;
 
 @RestController
 @RequestMapping("/auth")
@@ -48,14 +54,19 @@ public class AuthController {
                     .body("Invalid credentials");
         }
 
+        AppUser user = userService.getByUsername(request.getUsername());
         UserDetails userDetails = userService.loadUserByUsername(request.getUsername());
 
         String accessToken = jwtUtil.generateAccessToken(userDetails.getUsername());
         String refreshToken = jwtUtil.generateRefreshToken(userDetails.getUsername());
 
-        Map<String, String> resp = new HashMap<>();
+        Map<String, Object> resp = new HashMap<>();
         resp.put("accessToken", accessToken);
         resp.put("refreshToken", refreshToken);
+
+        //Putting user details in the resp
+        resp.put("username", user.getUsername());
+        resp.put("roles", user.getRoles());
 
         return ResponseEntity.ok(resp);
     }
@@ -70,8 +81,15 @@ public class AuthController {
         }
 
         userService.createUser(req.getUsername(), req.getPassword());
+        AppUser user = userService.getByUsername(req.getUsername());
 
-        return ResponseEntity.ok("User Registered Successfully");
+        Map<String, Object> resp = new HashMap<>();
+
+        //Putting user details in the resp
+        resp.put("username", user.getUsername());
+        resp.put("roles", user.getRoles());
+
+        return ResponseEntity.ok(resp);
     }
 
     // REFRESH TOKEN → Returns new Access Token only
@@ -101,25 +119,15 @@ public class AuthController {
 
 
     // DTOs
+    @Data
     public static class AuthRequest {
         private String username;
         private String password;
-
-        public String getUsername() { return username; }
-        public void setUsername(String u) { this.username = u; }
-
-        public String getPassword() { return password; }
-        public void setPassword(String p) { this.password = p; }
     }
 
+    @Data
     public static class RegisterRequest {
         private String username;
         private String password;
-
-        public String getUsername() { return username; }
-        public void setUsername(String u) { this.username = u; }
-
-        public String getPassword() { return password; }
-        public void setPassword(String p) { this.password = p; }
     }
 }

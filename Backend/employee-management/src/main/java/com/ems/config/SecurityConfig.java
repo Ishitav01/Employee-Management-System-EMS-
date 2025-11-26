@@ -1,7 +1,6 @@
 package com.ems.config;
 
 import com.ems.filter.JwtRequestFilter;
-import com.ems.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,9 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Configuration
 public class SecurityConfig {
-
-    @Autowired
-    private UserService userDetailsService;
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
