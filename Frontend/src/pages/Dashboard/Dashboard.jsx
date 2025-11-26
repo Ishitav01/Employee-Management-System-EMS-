@@ -59,7 +59,7 @@ export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
     setEditOpen(true);
   };
   const handleAddClick = () => {
-  setSelectedEmployee(null);   // no employee → add mode
+  setEmployeeData(null);   // no employee → add mode
   setAddOpen(true);           // open popup
 };
 
@@ -152,7 +152,7 @@ export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
                 </> : <>
-                <NoEmployeeFound onAddEmployee={() => setAddOpen(true)}/>
+                <NoEmployeeFound onAddEmployee={handleAddClick}/>
                 </>
               }
             </div>

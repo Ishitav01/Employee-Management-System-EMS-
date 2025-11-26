@@ -8,7 +8,7 @@ import { SnackbarProvider } from './context/SnackbarContext.jsx'
 import { UserProvider } from './context/UserContext.jsx'
 import '../src/styles/App.css'
 import '../src/styles/Dashboard.css'
-
+import '../src/styles/NoEmployeeFound.css'
 
 const DashboardPage = lazy(() => import('../src/pages/Dashboard/index.jsx'))
 const NotFound = lazy(() => import('../src/pages/NotFound.jsx'))

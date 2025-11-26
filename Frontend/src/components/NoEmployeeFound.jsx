@@ -4,19 +4,8 @@ import SearchOffIcon from "@mui/icons-material/SearchOff";
 
 export default function NoEmployeeFound({ onAddEmployee }) {
   return (
-    <Box
-      sx={{
-        textAlign: "center",
-        padding: "40px 20px",
-        color: "#555",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "60vh",
-      }}
-    >
-      <SearchOffIcon sx={{ fontSize: 80, color: "grey.500", mb: 2 }} />
+    <Box className="nmf-container">
+      <SearchOffIcon className="search-off-icon" />
 
       <Typography variant="h5" sx={{ fontWeight: 600 }}>
         No Employees Found
@@ -28,11 +17,7 @@ export default function NoEmployeeFound({ onAddEmployee }) {
 
       <Button
         variant="contained"
-        sx={{
-          textTransform: "none",
-          fontSize: "16px",
-          borderRadius: "8px",
-        }}
+        className="add-btn"
         onClick={onAddEmployee}
       >
         Add Employee
