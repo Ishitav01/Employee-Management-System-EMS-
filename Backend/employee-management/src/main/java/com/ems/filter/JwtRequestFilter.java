@@ -33,7 +33,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith("Bearer ")) {
             token = header.substring(7);
             if (jwtUtil.validateToken(token)) {
-                username = jwtUtil.getUsernameFromJwt(token);
+                username = jwtUtil.extractUsername(token);
             }
         }
 

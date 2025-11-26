@@ -19,16 +19,30 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.expiration:3600000}")
+    @Value("${jwt.expiration:3600000}")   // 1 hour
     private long jwtExpirationInMs;
+
+    @Value("${jwt.refreshExpiration:604800000}") // 7 days
+    private long refreshExpirationInMs;
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(String username) {
+    // Generate Access Token
+    public String generateAccessToken(String username) {
+        return generateToken(username, jwtExpirationInMs);
+    }
+
+    // Generate Refresh Token
+    public String generateRefreshToken(String username) {
+        return generateToken(username, refreshExpirationInMs);
+    }
+
+    // Main method to generate JWT token
+    private String generateToken(String username, long expiryTime) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
+        Date expiryDate = new Date(now.getTime() + expiryTime);
 
         return Jwts.builder()
                 .setSubject(username)
@@ -38,7 +52,8 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String getUsernameFromJwt(String token) {
+    // Extract username from token
+    public String extractUsername(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
@@ -48,6 +63,7 @@ public class JwtUtil {
         return claims.getSubject();
     }
 
+    // Validate the token
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
