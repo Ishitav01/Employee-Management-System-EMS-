@@ -1,0 +1,51 @@
+.notfound-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0d1b2a, #1b263b);
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.notfound-content {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.glitch-text {
+  font-size: 120px;
+  font-weight: 800;
+  color: #e0e1dd;
+  letter-spacing: 5px;
+  position: relative;
+  animation: glow 2s infinite alternate;
+}
+
+.notfound-message {
+  font-size: 20px;
+  margin-top: -10px;
+  opacity: 0.85;
+}
+
+/* Glow effect */
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 10px #00b4d8, 0 0 20px #00b4d8;
+  }
+  100% {
+    text-shadow: 0 0 20px #90e0ef, 0 0 40px #caf0f8;
+  }
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

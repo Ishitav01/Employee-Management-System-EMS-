@@ -1,6 +1,6 @@
 // Dashboard.jsx
 import React, { useState, useMemo, useEffect } from "react";
-import AddEditEmployee from "../components/AddEditEmployee";
+import AddEditEmployee from "../../components/AddEditEmployee";
 import {
   Table,
   TableBody,
@@ -15,13 +15,14 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  TablePagination
+  TablePagination,
+  Typography
 } from "@mui/material";
-import "../styles/Dashboard.css";
-import useDebounce from "../hooks/useDebounce";
+import useDebounce from "../../hooks/useDebounce";
 import { Outlet } from "react-router-dom";
+import '../../styles/Dashboard.css'
 
-export default function Dashboard() {
+export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
   const initialEmployees = [
     { id: 1, name: "Ankit Rawat", email: "ankit@example.com", designation: "Developer", salary: 65000 },
     { id: 2, name: "Ishita Verma", email: "ishita@example.com", designation: "Data Analyst", salary: 55000 },
@@ -77,12 +78,12 @@ export default function Dashboard() {
     setPage(0);
   };
   const handleEditClick = (emp) => {
-    setSelectedEmployee(emp);
-    setOpenEdit(true);
+    setEmployeeData(emp);
+    setEditOpen(true);
   };
   const handleAddClick = () => {
   setSelectedEmployee(null);   // no employee → add mode
-  setOpenEdit(true);           // open popup
+  setAddOpen(true);           // open popup
 };
 
   return (
@@ -122,12 +123,12 @@ export default function Dashboard() {
             <Table stickyHeader aria-label="employee table">
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Designation</TableCell>
-                  <TableCell>Salary</TableCell>
-                  <TableCell align="center">Actions</TableCell>
+                  <TableCell><Typography fontWeight={700}>ID</Typography></TableCell>
+                  <TableCell><Typography fontWeight={700}>NAME</Typography></TableCell>
+                  <TableCell><Typography fontWeight={700}>EMAIL</Typography></TableCell>
+                  <TableCell><Typography fontWeight={700}>DESIGNATION</Typography></TableCell>
+                  <TableCell><Typography fontWeight={700}>SALARY</Typography></TableCell>
+                  <TableCell><Typography fontWeight={700}>ACTIONS</Typography></TableCell>
                 </TableRow>
               </TableHead>
 
@@ -144,10 +145,17 @@ export default function Dashboard() {
                       <TableCell>{emp.email}</TableCell>
                       <TableCell>{emp.designation}</TableCell>
                       <TableCell>{emp.salary.toLocaleString()}</TableCell>
-                      <TableCell className="action-buttons">
-                        <Button size="small" variant="outlined" className="btn-edit" onClick={() => handleEditClick(emp)}
+                      <TableCell sx={{
+                        display : 'flex',
+                        flexDirection : 'row',
+                        gap : '20px',
+                        alignItems : 'center'
+                      }}>
+                        <Button
+                         size="small" variant="outlined" className="btn-edit" onClick={() => handleEditClick(emp)}
                         >Edit</Button>
-                        <Button size="small" variant="contained" className="btn-delete">Delete</Button>
+                        <Button
+                        size="small" variant="contained" className="btn-delete">Delete</Button>
                       </TableCell>
                     </TableRow>
                 ))
@@ -155,13 +163,6 @@ export default function Dashboard() {
               </TableBody>
             </Table>
           </TableContainer>
-          { openEdit && (
-                      <AddEditEmployee
-                        open={openEdit}
-                        handleClose={() => setOpenEdit(false)}
-                        data={selectedEmployee}
-                      />
-                    )}
           {/* Pagination */}
           <TablePagination
             rowsPerPageOptions={15}

@@ -73,24 +73,20 @@
   max-height: 520px;
 }
 
-
-.action-buttons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+.column-headings {
+  font-weight: 700;
 }
 
 
-.btn-edit {
+.btn-edit{
   border-color: var(--teal-500) !important;
   color: var(--teal-500) !important;
-
+  width: 45%;
 }
 
 .btn-delete {
-  margin-left: 10px;
   background-color: #d9534f !important;
+  width: 45%;
 }
 
 /* Responsive tweaks */
