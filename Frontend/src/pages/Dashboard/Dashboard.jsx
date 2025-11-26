@@ -22,15 +22,15 @@ import useDebounce from "../../hooks/useDebounce";
 import { Outlet } from "react-router-dom";
 import '../../styles/Dashboard.css'
 import { initialEmployees } from "../../utils/initialEmployees";
+import NoEmployeeFound from "../../components/NoEmployeeFound";
 
 export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
   
-  const [employees] = useState(initialEmployees);
+  const [employees,setEmployees] = useState(initialEmployees);
   const [searchField, setSearchField] = useState("name");
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
-  // Pagination state
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
 
@@ -41,7 +41,6 @@ export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
     );
   }, [employees, searchField, debouncedSearchQuery]);
 
-  // Slice the filtered results for current page
   const visibleRows = useMemo(() => {
     const start = page * rowsPerPage;
     return filtered.slice(start, start + rowsPerPage);
@@ -95,9 +94,10 @@ export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
 
             <Button variant="contained" className="btn-add" onClick={handleAddClick}>+ Add Employee</Button>
           </div>
-
-          {/* Table with sticky header and full width */}
-          <TableContainer component={Paper} className="table-container">
+            <div>
+              {
+                employees.length > 0 ? <>
+                <TableContainer component={Paper} className="table-container">
             <Table stickyHeader aria-label="employee table">
               <TableHead>
                 <TableRow>
@@ -151,6 +151,12 @@ export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
+                </> : <>
+                <NoEmployeeFound onAddEmployee={() => setAddOpen(true)}/>
+                </>
+              }
+            </div>
+          
         </div>
       </div>
     </Paper>

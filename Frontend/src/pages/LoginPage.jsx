@@ -52,6 +52,7 @@ export default function LoginPage() {
                 <Box className="login-header">
                     <AccountCircleIcon className='icon' />
                     <Typography variant='h5' fontWeight={600} fontStyle={"oblique"}>Employee Management System</Typography>
+                                        {/* <Typography className='animated-gradient' variant='h5'>Employee Management System</Typography> */}
                 </Box>
                 {
                     !login && <>
