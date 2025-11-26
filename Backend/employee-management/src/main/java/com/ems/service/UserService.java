@@ -1,15 +1,21 @@
 package com.ems.service;
 
-import com.ems.entity.AppUser;
-import com.ems.repository.UserRepository;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import com.ems.entity.AppUser;
+import com.ems.repository.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -25,7 +31,8 @@ public class UserService implements UserDetailsService {
         AppUser user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // Normalize stored roles: if they don't start with ROLE_ add it when creating authorities
+        // Normalize stored roles: if they don't start with ROLE_ add it when creating
+        // authorities
         List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
                 .map(r -> {
                     String role = r.startsWith("ROLE_") ? r : "ROLE_" + r;
@@ -33,7 +40,13 @@ public class UserService implements UserDetailsService {
                 })
                 .collect(Collectors.toList());
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                authorities);
+    }
+
+    public AppUser getByUsername(String username) {
+        return userRepo.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     // create normal user (role = USER)
