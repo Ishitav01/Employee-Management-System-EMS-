@@ -3,6 +3,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import LoginPage from './pages/LoginPage'
 import LoadingPage from './components/LoadingPage'
 import AddEditEmployee from './components/AddEditEmployee.jsx'
+import HeaderWrapper from './components/HeaderWrapper'
+import ProfileCard from './pages/ProfileCard'
+
+import "../src/styles/Dashboard.css"
 
 const DashboardPage = lazy(() => import('../src/pages/Dashboard'))
 
@@ -20,14 +24,18 @@ function App() {
       path : "/dashboard",
       element : 
       <Suspense fallback={<LoadingPage />}>
+      <HeaderWrapper>
       <DashboardPage />
+      </HeaderWrapper>
       </Suspense>
     },
     {
-      path : "/addEditEmployee",
+      path : "/user",
       element : 
       <Suspense fallback={<LoadingPage />}>
-      <AddEditEmployee/>
+      <HeaderWrapper>
+      <ProfileCard />
+      </HeaderWrapper>
       </Suspense>
     }
   ])

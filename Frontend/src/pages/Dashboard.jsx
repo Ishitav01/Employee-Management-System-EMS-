@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import "../styles/Dashboard.css";
 import useDebounce from "../hooks/useDebounce";
+import { Outlet } from "react-router-dom";
 
 export default function Dashboard() {
   const initialEmployees = [
@@ -86,10 +87,7 @@ export default function Dashboard() {
 
   return (
     <Paper className="paper-root" elevation={0}>
-      <header className="ems-header">
-        <div className="ems-logo">EMS</div>
-        <Button variant="outlined" className="btn-logout" >Logout</Button>
-      </header>
+      <Outlet />
       <div className="ems-root">
         <div className="ems-container">
           <div className="toolbar">
@@ -129,7 +127,7 @@ export default function Dashboard() {
                   <TableCell>Email</TableCell>
                   <TableCell>Designation</TableCell>
                   <TableCell>Salary</TableCell>
-                  <TableCell align="right">Actions</TableCell>
+                  <TableCell align="center">Actions</TableCell>
                 </TableRow>
               </TableHead>
 
@@ -146,7 +144,7 @@ export default function Dashboard() {
                       <TableCell>{emp.email}</TableCell>
                       <TableCell>{emp.designation}</TableCell>
                       <TableCell>{emp.salary.toLocaleString()}</TableCell>
-                      <TableCell align="right">
+                      <TableCell className="action-buttons">
                         <Button size="small" variant="outlined" className="btn-edit" onClick={() => handleEditClick(emp)}
                         >Edit</Button>
                         <Button size="small" variant="contained" className="btn-delete">Delete</Button>
