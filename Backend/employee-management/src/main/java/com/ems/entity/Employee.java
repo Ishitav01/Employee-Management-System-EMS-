@@ -6,12 +6,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data @Entity
+
+@Data @Entity@Getter@Setter
 public class Employee {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
     @NotNull
     String name;
     @NotNull
@@ -20,3 +23,5 @@ public class Employee {
     String designation;
     double salary;
 }
+
+

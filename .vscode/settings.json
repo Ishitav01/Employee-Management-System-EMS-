@@ -1,5 +1,6 @@
 {
     "java.project.sourcePaths": [
         "Backend/employee-backend/src"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
