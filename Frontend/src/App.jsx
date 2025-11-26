@@ -2,9 +2,13 @@ import { Suspense, lazy } from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import LoginPage from './pages/LoginPage'
 import LoadingPage from './components/LoadingPage'
-import AddEditEmployee from './components/AddEditEmployee.jsx'
 import HeaderWrapper from './components/HeaderWrapper'
 import ProfileCard from './pages/ProfileCard'
+import { SnackbarProvider } from './context/SnackbarContext.jsx'
+import { UserProvider } from './context/UserContext.jsx'
+import '../src/styles/App.css'
+import '../src/styles/Dashboard.css'
+
 
 const DashboardPage = lazy(() => import('../src/pages/Dashboard/index.jsx'))
 const NotFound = lazy(() => import('../src/pages/NotFound.jsx'))
@@ -47,8 +51,11 @@ function App() {
 
   return (
     <>
+    <UserProvider>
+    <SnackbarProvider>
       <RouterProvider router={appRouter} />
-
+    </SnackbarProvider>
+    </UserProvider>
     </>
   )
 }

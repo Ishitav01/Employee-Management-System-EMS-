@@ -1,27 +1,24 @@
 .login-page {
     width: 100%;
-    min-height: 100vh;   /* full screen height but scrollable */
-    background-image: url("https://www.shutterstock.com/image-photo/corporate-data-management-system-dms-260nw-338687519.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    padding-top: 40px;    /* gives some spacing */
+    min-height: 100vh;
+    background: linear-gradient(135deg, #004e92, #000428, #6a11cb);
+    padding-top: 40px;
     padding-bottom: 40px;
-    overflow-y: auto;     /* allows scrolling if form grows */
-    position: relative;   /* replaces fixed */
+    overflow-y: auto;
 }
+
 .login-card {
     box-shadow: 15px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    margin: 40px auto;
+    margin: 20px auto;
     justify-content: space-between;
     padding: 30px;
     color: black;
     gap: 20px;
     width: 90%;
-    max-width: 400px;
+    max-width: 500px;
     background-color: rgba(255, 255, 255, 0.9);
 }
 
