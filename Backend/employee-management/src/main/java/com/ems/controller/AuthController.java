@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -38,8 +39,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));        
 
             AppUser user = userService.getByUsername(request.getUsername());
 
@@ -98,8 +98,7 @@ public class AuthController {
             resp.put("refreshToken", refreshToken);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(resp);
-        } 
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Something went wrong : " + ex.getMessage());
         }

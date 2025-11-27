@@ -1,13 +1,3 @@
-.paper-root {
-  width: 100%;
-  max-width: 100vw;
-  min-height: 100vh;
-  background: var(--neutral-bg);
-}
-
-.ems-root {
-  width: 100%;
-}
 
 .ems-header {
   position: sticky;
@@ -16,8 +6,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 20px;
-  background: linear-gradient(150deg, #004e92, #000428, #6a11cb);
-  color: white;
+  background: var(--header-gradient);
+  color: var(--text-main);
   z-index: 2000;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
 }
@@ -35,7 +25,7 @@
 .ems-container {
   padding: 16px;
   margin: 20px auto;
-  background: white;
+  background: var(--bg-container);
   border-radius: 16px 16px 0 0;
   box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.12);
 
@@ -53,10 +43,36 @@
 }
 
 .btn-add {
-  background-color: #4c2fb3;
-  color: white;
+  background-color: #1976d2 !important;
+  color: white !important;
+  height: 56px !important;
+  padding: 0 26px !important;
+  font-size: 15px !important;     
+  font-weight: 580 !important;
+  letter-spacing: 0.1px;
+  border-radius: 10px !important;
+  text-transform: none !important;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  justify-items: center;       
+  white-space: nowrap !important; 
+  
+  gap: 0px;                  
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+  transition: 0.25s ease;
 }
 
+.btn-add:hover {
+  background-color: #125aa5 !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  transform: translateY(-1px);
+}
+
+.btn-add svg {
+  font-size: 24px !important;     
+}
 .table-container {
   width: 100%;
   max-width: 100%;

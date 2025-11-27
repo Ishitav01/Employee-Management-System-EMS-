@@ -1,7 +1,7 @@
 .login-page {
     width: 100%;
     min-height: 100vh;
-    background: linear-gradient(135deg, #004e92, #000428, #6a11cb);
+     background: var(--login-bg-gradient);
     padding-top: 40px;
     padding-bottom: 40px;
     overflow-y: auto;
@@ -15,11 +15,10 @@
     margin: 20px auto;
     justify-content: space-between;
     padding: 30px;
-    color: black;
     gap: 20px;
     width: 90%;
     max-width: 500px;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: var(--bg-card);
 }
 
 /* .animated-gradient {
@@ -39,10 +38,7 @@
 } */
 
 
-.login-button{
-    background-color: #50c7c7;
-    color: white;
-}
+
 
 .login-header{
     display: flex;
