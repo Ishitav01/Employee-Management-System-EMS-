@@ -39,56 +39,70 @@ public class AuthController {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        } catch (BadCredentialsException ex) {
+        
+
+            AppUser user = userService.getByUsername(request.getUsername());
+
+            String accessToken = jwtUtil.generateAccessToken(user.getUsername());
+            String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
+
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("id", user.getId());
+            resp.put("username", user.getUsername());
+            resp.put("email", user.getEmail());
+            resp.put("role", user.getRole());
+            resp.put("accessToken", accessToken);
+            resp.put("refreshToken", refreshToken);
+
+            return ResponseEntity.ok(resp);
+        } 
+        catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
-
-        AppUser user = userService.getByUsername(request.getUsername());
-
-        String accessToken = jwtUtil.generateAccessToken(user.getUsername());
-        String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
-
-        Map<String, Object> resp = new HashMap<>();
-        resp.put("id", user.getId());
-        resp.put("username", user.getUsername());
-        resp.put("email", user.getEmail());
-        resp.put("role", user.getRole());
-        resp.put("accessToken", accessToken);
-        resp.put("refreshToken", refreshToken);
-
-        return ResponseEntity.ok(resp);
+        catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Something went wrong : " + ex.getMessage());
+        }
     }
 
     // Register -> create a USER and return same shape with tokens
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
-        if (userRepository.findByUsername(req.getUsername()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
+        try{
+            if (userRepository.findByUsername(req.getUsername()).isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username " + req.getUsername() + " already exists");
+            }
+            else if (userRepository.findByEmail(req.getEmail()).isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email " + req.getEmail() + " already exists");
+            }
+            else if(req.getRole().equals("ROLE_CEO") || req.getRole().equals("CEO")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot register as CEO");
+            }
+
+            AppUser user = userService.createUser(req.getName(), req.getUsername(), 
+                                                req.getPassword(), req.getEmail(), req.getRole());
+
+            String accessToken = jwtUtil.generateAccessToken(user.getUsername());
+            String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
+
+            Map<String, Object> resp = new HashMap<>();
+
+            // User details
+            resp.put("id", user.getId());
+            resp.put("username", user.getUsername());
+            resp.put("email", user.getEmail());
+            resp.put("role", user.getRole());
+
+            // Returning tokens
+            resp.put("accessToken", accessToken);
+            resp.put("refreshToken", refreshToken);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(resp);
+        } 
+        catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Something went wrong : " + ex.getMessage());
         }
-
-        if (userRepository.findByEmail(req.getEmail()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
-        }
-
-        AppUser user = userService.createUser(req.getName(), req.getUsername(), 
-                                            req.getPassword(), req.getEmail(), req.getRole());
-
-        String accessToken = jwtUtil.generateAccessToken(user.getUsername());
-        String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
-
-        Map<String, Object> resp = new HashMap<>();
-
-        // User details
-        resp.put("id", user.getId());
-        resp.put("username", user.getUsername());
-        resp.put("email", user.getEmail());
-        resp.put("role", user.getRole());
-
-        // Returning tokens
-        resp.put("accessToken", accessToken);
-        resp.put("refreshToken", refreshToken);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(resp);
     }
 
     // DTOs
