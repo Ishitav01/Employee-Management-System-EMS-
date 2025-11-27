@@ -22,6 +22,7 @@ public class Employee {
     @NotNull
     private String designation;
     private double salary;
+    private Long created_by;
 }
 
 

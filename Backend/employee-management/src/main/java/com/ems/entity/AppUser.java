@@ -21,6 +21,7 @@ public class AppUser {
     @Column(unique = true)
     private String username;
 
+    private String email;
     private String password; // stored encoded
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -33,8 +34,9 @@ public class AppUser {
     public AppUser() {
     }
 
-    public AppUser(String username, String password, Set<String> roles) {
+    public AppUser(String username,String email, String password, Set<String> roles) {
         this.username = username;
+        this.email=email;
         this.password = password;
         this.roles = roles;
     }
@@ -70,5 +72,12 @@ public class AppUser {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+
+    public void setEmail(String email){
+        this.email=email;
+    }
+    public String getEmail(){
+        return email;
     }
 }
