@@ -14,6 +14,6 @@ public interface UserService extends UserDetailsService {
     public void deleteUser(String username);
     public AppUser createAdmin(String username, String rawPassword, String email);
     public void promoteToAdmin(String username);
-    public void demoteToUser(String username);
+    void demoteToUser(String username);
     public List<AppUser> findAllUsers();
 }

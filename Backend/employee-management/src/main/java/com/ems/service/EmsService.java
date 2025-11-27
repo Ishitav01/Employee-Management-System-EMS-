@@ -5,10 +5,10 @@ import java.util.List;
 import com.ems.entity.Employee;
 
 public interface EmsService {
-    Employee addEmployee(Employee employee);
-    List<Employee> getAllEmployees();
-    List<Employee> findAllByCreatedBy(Long userId);
-    Employee getEmployeeById(Long id);
-    void updateEmployee(Employee employee);
-    void deleteEmployee(Long id);
+    public Employee addEmployee(Employee employee);
+    public List<Employee> getAllEmployees();
+    public List<Employee> findAllByCreatedBy(Long userId);
+    public Employee getEmployeeById(Long id);
+    public void updateEmployee(Employee employee);
+    public void deleteEmployee(Long id);
 }

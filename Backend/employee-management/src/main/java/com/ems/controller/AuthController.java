@@ -65,7 +65,7 @@ public class AuthController {
         }
     }
 
-    // Register -> create a USER and return same shape with tokens
+    // Register -> create a USER and return same shape with tokens.
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
         try{

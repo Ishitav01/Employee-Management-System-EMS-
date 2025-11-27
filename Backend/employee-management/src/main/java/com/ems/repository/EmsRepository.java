@@ -10,8 +10,8 @@ import com.ems.entity.Employee;
 
 @Repository
 public interface EmsRepository extends JpaRepository<Employee, Long> {
-    Optional<Employee> findByEmail(String email);
+    public Optional<Employee> findByEmail(String email);
 
-    List<Employee> findAllByCreatedBy(Long userId);
+    public List<Employee> findAllByCreatedBy(Long userId);
 }
 

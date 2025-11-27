@@ -40,7 +40,7 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-    // Admin can view only employees they created
+    // Admin can view only employees they created.
     @GetMapping
     // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getMyEmployees(Authentication auth) {

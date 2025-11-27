@@ -8,6 +8,7 @@ public class UserNotFoundException extends RuntimeException {
     }
 
     public UserNotFoundException() {
+        //default message in case no message is provided
         this.message = "User Not Found";
     }
 

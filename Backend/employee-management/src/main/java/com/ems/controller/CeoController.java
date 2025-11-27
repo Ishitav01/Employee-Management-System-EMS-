@@ -75,7 +75,7 @@ public class CeoController {
                 emsService.updateEmployee(e);
             }
 
-            // DELETE the admin account
+            // DELETE the admin account.
             userService.deleteUser(username);
             return ResponseEntity.ok("Admin removed. All their employees reassigned to CEO.");
         } catch (Exception e) {

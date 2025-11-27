@@ -62,6 +62,7 @@ public class EmsServiceImpl implements EmsService {
         emsRepository.delete(existingEmployee);
     }
 
+    //CreatedBy is Long
     @Override
     public List<Employee> findAllByCreatedBy(Long userId) {
         userRepository.findById(userId)

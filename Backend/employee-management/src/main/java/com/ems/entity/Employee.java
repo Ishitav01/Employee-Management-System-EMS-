@@ -30,6 +30,6 @@ public class Employee {
     public Employee() {
     }
 
-    // getters & setters created by Lombok @Data
+    // getters & setters created by Lombok @Data.
    
 }
