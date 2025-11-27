@@ -27,7 +27,7 @@ import { initialEmployees } from "../../utils/initialEmployees";
 import NoEmployeeFound from "../../components/NoEmployeeFound";
 import { useLoginContext } from "../../context/UserContext";
 
-export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData }) {
+export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData, user }) {
 
   const [employees, setEmployees] = useState(initialEmployees);
   const [searchField, setSearchField] = useState("name");
@@ -36,12 +36,9 @@ export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData }) 
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
-  const { userData } = useLoginContext();
 
   useEffect(() => {
-    console.log(userData);
-  },[userData])
-
+  }, [user])
   const filtered = useMemo(() => {
     if (!debouncedSearchQuery) return employees;
     return employees.filter((emp) =>
@@ -99,14 +96,19 @@ export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData }) 
               onChange={(e) => setSearchQuery(e.target.value)}
               fullWidth
             />
-            <Button
-              variant="contained"
-              className="btn-add"
-              onClick={handleAddClick}
-              startIcon={<PersonAddIcon />}
-            >
-              Add Employee
-            </Button>
+
+            {
+              user?.role === "ROLE_ADMIN" &&
+
+              <Button
+                variant="contained"
+                className="btn-add"
+                onClick={handleAddClick}
+                startIcon={<PersonAddIcon />}
+              >
+                Add Employee
+              </Button>
+            }
           </div>
           <div>
             {
@@ -120,7 +122,10 @@ export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData }) 
                         <TableCell><Typography fontWeight={700}>EMAIL</Typography></TableCell>
                         <TableCell><Typography fontWeight={700}>DESIGNATION</Typography></TableCell>
                         <TableCell><Typography fontWeight={700}>SALARY</Typography></TableCell>
-                        <TableCell><Typography fontWeight={700}>ACTIONS</Typography></TableCell>
+                        {
+                          user?.role === "ROLE_ADMIN" && <TableCell><Typography fontWeight={700}>ACTIONS</Typography></TableCell>
+
+                        }
                       </TableRow>
                     </TableHead>
 
@@ -137,18 +142,22 @@ export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData }) 
                             <TableCell>{emp.email}</TableCell>
                             <TableCell>{emp.designation}</TableCell>
                             <TableCell>{emp.salary.toLocaleString()}</TableCell>
-                            <TableCell sx={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              gap: '20px',
-                              alignItems: 'center'
-                            }}>
-                              <Button
-                                size="small" variant="contained" className="btn-edit" onClick={() => handleEditClick(emp)}
-                              >Edit</Button>
-                              <Button
-                                size="small" variant="contained" className="btn-delete">Delete</Button>
-                            </TableCell>
+                            {
+                              user?.role === "ROLE_ADMIN" &&
+                              <TableCell sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '20px',
+                                alignItems: 'center'
+                              }}>
+                                <Button
+                                  size="small" variant="contained" className="btn-edit" onClick={() => handleEditClick(emp)}
+                                >Edit</Button>
+                                <Button
+                                  size="small" variant="contained" className="btn-delete">Delete</Button>
+                              </TableCell>
+                            }
+
                           </TableRow>
                         ))
                       )}

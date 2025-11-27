@@ -32,7 +32,7 @@ export const useLogin = () => {
                 password,
                 username,
                 name,
-                role : "ROLE_ADMIN"
+                role : "ROLE_USER"
             })
 
             const accessToken = response.data?.accessToken;
