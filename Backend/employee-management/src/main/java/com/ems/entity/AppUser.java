@@ -12,8 +12,13 @@ public class AppUser {
     @Column(unique = true, nullable = false)
     private String username;
 
+<<<<<<< HEAD
     @Column(nullable = false)
     private String password; // encoded
+=======
+    private String email;
+    private String password; // stored encoded
+>>>>>>> 93a7d231a35db1d86901efc4c95b85c1d505d42a
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -24,8 +29,13 @@ public class AppUser {
 
     public AppUser() {}
 
+<<<<<<< HEAD
     public AppUser(String username, String password, String email, String role) {
+=======
+    public AppUser(String username,String email, String password, Set<String> roles) {
+>>>>>>> 93a7d231a35db1d86901efc4c95b85c1d505d42a
         this.username = username;
+        this.email=email;
         this.password = password;
         this.email = email;
         this.role = role;
@@ -44,6 +54,32 @@ public class AppUser {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
+<<<<<<< HEAD
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 }
+=======
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
+
+    public void setEmail(String email){
+        this.email=email;
+    }
+    public String getEmail(){
+        return email;
+    }
+}
+>>>>>>> 93a7d231a35db1d86901efc4c95b85c1d505d42a

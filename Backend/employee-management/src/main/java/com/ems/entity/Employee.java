@@ -11,6 +11,7 @@ public class Employee {
 
     private String name;
     private String designation;
+<<<<<<< HEAD
     private Double salary;
 
     @Column(unique = true)
@@ -39,4 +40,8 @@ public class Employee {
 
     public String getCreatedBy() { return createdBy; }
     public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+=======
+    private double salary;
+    private Long created_by;
+>>>>>>> 93a7d231a35db1d86901efc4c95b85c1d505d42a
 }
