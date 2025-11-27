@@ -23,6 +23,7 @@ import { Outlet } from "react-router-dom";
 import '../../styles/Dashboard.css'
 import { initialEmployees } from "../../utils/initialEmployees";
 import NoEmployeeFound from "../../components/NoEmployeeFound";
+import { useLoginContext } from "../../context/UserContext";
 
 export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
   
@@ -33,6 +34,11 @@ export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
+  const { userData } = useLoginContext();
+
+  useEffect(() => {
+    console.log(userData);
+  },[userData])
 
   const filtered = useMemo(() => {
     if (!debouncedSearchQuery) return employees;
