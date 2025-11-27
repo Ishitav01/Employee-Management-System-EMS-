@@ -18,15 +18,17 @@ import {
   TablePagination,
   Typography
 } from "@mui/material";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+
 import useDebounce from "../../hooks/useDebounce";
 import { Outlet } from "react-router-dom";
 import '../../styles/Dashboard.css'
 import { initialEmployees } from "../../utils/initialEmployees";
 import NoEmployeeFound from "../../components/NoEmployeeFound";
 
-export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
-  
-  const [employees,setEmployees] = useState(initialEmployees);
+export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData }) {
+
+  const [employees, setEmployees] = useState(initialEmployees);
   const [searchField, setSearchField] = useState("name");
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
@@ -59,9 +61,9 @@ export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
     setEditOpen(true);
   };
   const handleAddClick = () => {
-  setEmployeeData(null);   // no employee → add mode
-  setAddOpen(true);           // open popup
-};
+    setEmployeeData(null);   // no employee → add mode
+    setAddOpen(true);           // open popup
+  };
 
   return (
     <Paper className="paper-root" elevation={0}>
@@ -91,72 +93,78 @@ export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
               onChange={(e) => setSearchQuery(e.target.value)}
               fullWidth
             />
-
-            <Button variant="contained" className="btn-add" onClick={handleAddClick}>+ Add Employee</Button>
+            <Button
+              variant="contained"
+              className="btn-add"
+              onClick={handleAddClick}
+              startIcon={<PersonAddIcon />}
+            >
+              Add Employee
+            </Button>
           </div>
-            <div>
-              {
-                employees.length > 0 ? <>
+          <div>
+            {
+              employees.length > 0 ? <>
                 <TableContainer component={Paper} className="table-container">
-            <Table stickyHeader aria-label="employee table">
-              <TableHead>
-                <TableRow>
-                  <TableCell><Typography fontWeight={700}>ID</Typography></TableCell>
-                  <TableCell><Typography fontWeight={700}>NAME</Typography></TableCell>
-                  <TableCell><Typography fontWeight={700}>EMAIL</Typography></TableCell>
-                  <TableCell><Typography fontWeight={700}>DESIGNATION</Typography></TableCell>
-                  <TableCell><Typography fontWeight={700}>SALARY</Typography></TableCell>
-                  <TableCell><Typography fontWeight={700}>ACTIONS</Typography></TableCell>
-                </TableRow>
-              </TableHead>
+                  <Table stickyHeader aria-label="employee table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell><Typography fontWeight={700}>ID</Typography></TableCell>
+                        <TableCell><Typography fontWeight={700}>NAME</Typography></TableCell>
+                        <TableCell><Typography fontWeight={700}>EMAIL</Typography></TableCell>
+                        <TableCell><Typography fontWeight={700}>DESIGNATION</Typography></TableCell>
+                        <TableCell><Typography fontWeight={700}>SALARY</Typography></TableCell>
+                        <TableCell><Typography fontWeight={700}>ACTIONS</Typography></TableCell>
+                      </TableRow>
+                    </TableHead>
 
-              <TableBody>
-                {visibleRows.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={6} align="center">No employees found.</TableCell>
-                  </TableRow>
-                ) : (
-                  visibleRows.map((emp, idx) => (
-                    <TableRow key={`${emp.id}-${idx}`} hover>
-                      <TableCell>{emp.id}</TableCell>
-                      <TableCell>{emp.name}</TableCell>
-                      <TableCell>{emp.email}</TableCell>
-                      <TableCell>{emp.designation}</TableCell>
-                      <TableCell>{emp.salary.toLocaleString()}</TableCell>
-                      <TableCell sx={{
-                        display : 'flex',
-                        flexDirection : 'row',
-                        gap : '20px',
-                        alignItems : 'center'
-                      }}>
-                        <Button
-                         size="small" variant="contained" className="btn-edit" onClick={() => handleEditClick(emp)}
-                        >Edit</Button>
-                        <Button
-                        size="small" variant="contained" className="btn-delete">Delete</Button>
-                      </TableCell>
-                    </TableRow>
-                ))
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          {/* Pagination */}
-          <TablePagination
-            rowsPerPageOptions={15}
-            component="div"
-            count={filtered.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-                </> : <>
-                <NoEmployeeFound onAddEmployee={handleAddClick}/>
-                </>
-              }
-            </div>
-          
+                    <TableBody>
+                      {visibleRows.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={6} align="center">No employees found.</TableCell>
+                        </TableRow>
+                      ) : (
+                        visibleRows.map((emp, idx) => (
+                          <TableRow key={`${emp.id}-${idx}`} hover>
+                            <TableCell>{emp.id}</TableCell>
+                            <TableCell>{emp.name}</TableCell>
+                            <TableCell>{emp.email}</TableCell>
+                            <TableCell>{emp.designation}</TableCell>
+                            <TableCell>{emp.salary.toLocaleString()}</TableCell>
+                            <TableCell sx={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              gap: '20px',
+                              alignItems: 'center'
+                            }}>
+                              <Button
+                                size="small" variant="contained" className="btn-edit" onClick={() => handleEditClick(emp)}
+                              >Edit</Button>
+                              <Button
+                                size="small" variant="contained" className="btn-delete">Delete</Button>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                {/* Pagination */}
+                <TablePagination
+                  rowsPerPageOptions={15}
+                  component="div"
+                  count={filtered.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </> : <>
+                <NoEmployeeFound onAddEmployee={handleAddClick} />
+              </>
+            }
+          </div>
+
         </div>
       </div>
     </Paper>
