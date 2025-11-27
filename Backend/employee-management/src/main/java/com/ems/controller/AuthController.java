@@ -39,7 +39,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));        
 
             AppUser user = userService.getByUsername(request.getUsername());
 
@@ -55,28 +55,32 @@ public class AuthController {
             resp.put("refreshToken", refreshToken);
 
             return ResponseEntity.ok(resp);
-        } catch (BadCredentialsException ex) {
+        } 
+        catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Something went wrong : " + ex.getMessage());
         }
     }
 
-    // Register -> create a USER and return same shape with tokens
+    // Register -> create a USER and return same shape with tokens.
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
-        try {
+        try{
             if (userRepository.findByUsername(req.getUsername()).isPresent()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username " + req.getUsername() + " already exists");
+            }
+            else if (userRepository.findByEmail(req.getEmail()).isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email " + req.getEmail() + " already exists");
+            }
+            else if(req.getRole().equals("ROLE_CEO") || req.getRole().equals("CEO")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot register as CEO");
             }
 
-            if (userRepository.findByEmail(req.getEmail()).isPresent()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
-            }
-
-            AppUser user = userService.createUser(req.getName(), req.getUsername(),
-                    req.getPassword(), req.getEmail(), req.getRole());
+            AppUser user = userService.createUser(req.getName(), req.getUsername(), 
+                                                req.getPassword(), req.getEmail(), req.getRole());
 
             String accessToken = jwtUtil.generateAccessToken(user.getUsername());
             String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());

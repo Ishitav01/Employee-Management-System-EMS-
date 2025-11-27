@@ -1,13 +1,16 @@
 package com.ems.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ems.entity.Employee;
 import com.ems.exceptions.EmployeeNotFoundException;
+import com.ems.exceptions.UserNotFoundException;
 import com.ems.repository.EmsRepository;
+import com.ems.repository.UserRepository;
 
 @Service
 public class EmsServiceImpl implements EmsService {
@@ -15,12 +18,16 @@ public class EmsServiceImpl implements EmsService {
     @Autowired
     private EmsRepository emsRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public void addEmployee(Employee employee) {
-        if (employee == null) {
-            throw new EmployeeNotFoundException("Employee object is null");
-        }
-        emsRepository.save(employee);
+    public Employee addEmployee(Employee employee) {
+        Optional.ofNullable(employee).map(emp -> emp)
+            .orElseThrow(() -> new EmployeeNotFoundException("Employee object is null"));
+        
+            emsRepository.save(employee);
+        return employee;
     }
 
     @Override
@@ -53,5 +60,14 @@ public class EmsServiceImpl implements EmsService {
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
 
         emsRepository.delete(existingEmployee);
+    }
+
+    //CreatedBy is Long
+    @Override
+    public List<Employee> findAllByCreatedBy(Long userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with " + userId + " not found"));
+        
+        return emsRepository.findAllByCreatedBy(userId);
     }
 }
