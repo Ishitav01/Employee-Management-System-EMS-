@@ -6,12 +6,12 @@ import jakarta.persistence.*;
 @Table(name = "employee")
 public class Employee {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
     private String designation;
-<<<<<<< HEAD
     private Double salary;
 
     @Column(unique = true)
@@ -20,28 +20,55 @@ public class Employee {
     // username of creator (admin who created this employee)
     private String createdBy;
 
-    public Employee() {}
+    public Employee() {
+    }
 
     // getters & setters...
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getDesignation() { return designation; }
-    public void setDesignation(String designation) { this.designation = designation; }
+    public String getName() {
+        return name;
+    }
 
-    public Double getSalary() { return salary; }
-    public void setSalary(Double salary) { this.salary = salary; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getDesignation() {
+        return designation;
+    }
 
-    public String getCreatedBy() { return createdBy; }
-    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
-=======
-    private double salary;
-    private Long created_by;
->>>>>>> 93a7d231a35db1d86901efc4c95b85c1d505d42a
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 }
