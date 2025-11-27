@@ -31,17 +31,15 @@ public class UserService implements UserDetailsService {
         AppUser user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // Normalize stored roles: if they don't start with ROLE_ add it when creating
-        // authorities
-        List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
-                .map(r -> {
-                    String role = r.startsWith("ROLE_") ? r : "ROLE_" + r;
-                    return new SimpleGrantedAuthority(role);
-                })
-                .collect(Collectors.toList());
+        // ensure role starts with ROLE_
+        String role = user.getRole();
+        if (!role.startsWith("ROLE_")) role = "ROLE_" + role;
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                authorities);
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority(role))
+        );
     }
 
     public AppUser getByUsername(String username) {
@@ -49,32 +47,39 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    // create normal user (role = USER)
-    public AppUser createUser(String username, String rawPassword) {
+    public AppUser createUser(String username, String rawPassword, String email) {
         AppUser user = new AppUser();
         user.setUsername(username);
         user.setPassword(encoder.encode(rawPassword));
-        user.setRoles(Collections.singleton("USER")); // store as "USER" (not ROLE_USER)
+        user.setEmail(email);
+        user.setRole("ROLE_USER"); // default
         return userRepo.save(user);
     }
 
-    // promote to admin (CEO only should call this via controller)
+    // create admin (CEO will call controller to create admin)
+    public AppUser createAdmin(String username, String rawPassword, String email) {
+        AppUser user = new AppUser();
+        user.setUsername(username);
+        user.setPassword(encoder.encode(rawPassword));
+        user.setEmail(email);
+        user.setRole("ROLE_ADMIN");
+        return userRepo.save(user);
+    }
+
     public void promoteToAdmin(String username) {
         AppUser user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        Set<String> roles = new HashSet<>(user.getRoles());
-        roles.add("ADMIN"); // store raw role
-        user.setRoles(roles);
+        user.setRole("ROLE_ADMIN");
         userRepo.save(user);
     }
 
-    // demote admin -> remove ADMIN role
-    public void demoteAdmin(String username) {
+    public void demoteToUser(String username) {
         AppUser user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        Set<String> roles = new HashSet<>(user.getRoles());
-        roles.remove("ADMIN");
-        user.setRoles(roles);
+        user.setRole("ROLE_USER");
         userRepo.save(user);
     }
+
+    // other helper methods like findAllUsers() for CEO view...
+    public List<AppUser> findAll() { return userRepo.findAll(); }
 }
