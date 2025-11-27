@@ -1,55 +1,54 @@
 package com.ems.filter;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-
+import com.ems.service.UserService;
 import com.ems.utility.JwtUtil;
-
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import java.io.IOException;
 
 @Component
-public class JwtRequestFilter implements Filter {
+public class JwtRequestFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private UserService userService;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response,
-        FilterChain chain)
-        throws IOException, ServletException {
-            
-            HttpServletRequest req = (HttpServletRequest) request;
-            String authHeader = req.getHeader("Authorization");
-            
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                String token = authHeader.substring(7);
-                try {
-                    Map<String, Object> claims = JwtUtil.validateToken(token);
-                    String username = (String) claims.get("sub");
-                    
-                @SuppressWarnings("unchecked")
-                List<String> roles = (List<String>) claims.get("roles");
-                var authorities = roles.stream()
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain chain)
+            throws ServletException, IOException {
 
-                var authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
+        String header = request.getHeader("Authorization");
+        String token = null;
+        String username = null;
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            } catch (Exception e) {
-                System.out.println("Invalid or expired token: " + e.getMessage());
+        if (header != null && header.startsWith("Bearer ")) {
+            token = header.substring(7);
+            if (jwtUtil.validateToken(token)) {
+                username = jwtUtil.extractUsername(token);
             }
         }
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+            UserDetails userDetails = userService.loadUserByUsername(username);
+
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities()
+                    );
+
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
+
         chain.doFilter(request, response);
     }
 }

@@ -1,3 +1,8 @@
+.dialog-title{
+    background: linear-gradient(135deg, #004e92, #000428, #6a11cb);
+    color: #ffffff;
+}
+
 .form-container {
   display: flex;
   justify-content: center;

@@ -1,7 +1,6 @@
 package com.ems.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,11 +17,10 @@ public class EmsServiceImpl implements EmsService {
 
     @Override
     public void addEmployee(Employee employee) {
-        Optional.ofNullable(employee).map(e -> e)
-        .orElseThrow(() -> new EmployeeNotFoundException("Employee object is null"));
-
+        if (employee == null) {
+            throw new EmployeeNotFoundException("Employee object is null");
+        }
         emsRepository.save(employee);
-        System.out.println("Employee added successfully");
     }
 
     @Override
@@ -31,15 +29,15 @@ public class EmsServiceImpl implements EmsService {
     }
 
     @Override
-    public Employee getEmployeeById(int id) {
+    public Employee getEmployeeById(Long id) {
         return emsRepository.findById(id)
-        .orElseThrow(() -> new EmployeeNotFoundException("Employee with id " + id + " not found"));
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
     }
 
     @Override
     public void updateEmployee(Employee employee) {
         Employee existingEmployee = emsRepository.findById(employee.getId())
-        .orElseThrow(() -> new EmployeeNotFoundException("Employee with id " + employee.getId() + " not found"));
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + employee.getId() + " not found"));
 
         existingEmployee.setName(employee.getName());
         existingEmployee.setDesignation(employee.getDesignation());
@@ -50,9 +48,9 @@ public class EmsServiceImpl implements EmsService {
     }
 
     @Override
-    public void deleteEmployee(int id) {
+    public void deleteEmployee(Long id) {
         Employee existingEmployee = emsRepository.findById(id)
-        .orElseThrow(() -> new EmployeeNotFoundException("Employee with id " + id + " not found"));
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
 
         emsRepository.delete(existingEmployee);
     }
