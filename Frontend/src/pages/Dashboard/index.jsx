@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import Dashboard from "./Dashboard"
 import AddEditEmployee from "../../components/AddEditEmployee";
 import { useLoginContext } from "../../context/UserContext";
+import { useSnackbar } from "../../context/SnackbarContext";
+import { useNavigate } from "react-router-dom";
 
 
 const DashboardPage = () => {
@@ -9,16 +11,23 @@ const DashboardPage = () => {
     const [editOpen, setEditOpen] = useState(false);
     const [addOpen,setAddOpen] = useState(false)
     const [employeeData,setEmployeeData] = useState(null);
-    const { userData } = useLoginContext();
+    const navigate = useNavigate();
+    const [user,setUser] = useState(null);
+
+    const {showSnackbar} = useSnackbar();
 
     useEffect(() => {
-
-      console.log("In dashboard page",userData)
-    },[userData])
+      const userData = JSON.parse(localStorage.getItem("userData") || "null");
+      if(!userData){
+        navigate("/");
+        showSnackbar("You are not logged in!","error");
+      }
+      setUser(userData);
+    },[])
 
     return (
         <>
-        <Dashboard    user={userData ? userData : null} setEditOpen={setEditOpen} setAddOpen={setAddOpen} setEmployeeData={setEmployeeData}/>
+        <Dashboard  user={user} setEditOpen={setEditOpen} setAddOpen={setAddOpen} setEmployeeData={setEmployeeData}/>
         { editOpen && (
                               <AddEditEmployee
                                 open={editOpen}

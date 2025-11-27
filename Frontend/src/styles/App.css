@@ -9,13 +9,211 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
+  background-color: var(--bg-main);
 }
 
+/* ================================
+   🌞 LIGHT MODE (Default)
+================================ */
 :root {
-  --teal-500: #008080;
-  --teal-700: #005f5f;
-  --neutral-bg: #f4f6fb;
-  --card-border: #e2e8f0;
-  --muted: #64748b;
-  --text: #1f2933;
+  --bg-main: #f4f6fb;
+  --bg-card: #ffffff;
+  --bg-container: #ffffff;
+
+  --text-main: #1f2933;
+  --text-light: #4b5563;
+  --text-inverse: #ffffff;
+  --text-outlined : #0f172a;
+  --table-bg : #ffffff;
+
+  --header-gradient: linear-gradient(150deg, #004e92, #000428, #6a11cb);
+
+  --button-primary: #1976d2;
+  --button-primary-hover: #125aa5;
+
+  --button-delete: #d9534f;
+  --button-edit: #4c2fb3;
+
+  --login-bg-gradient: linear-gradient(135deg, #004e92, #000428, #6a11cb);
+   --table-header-bg: #e5e9f2;   /* light gray */
+  --table-header-text: #1f2933;
 }
+
+
+/* ================================
+   🌙 DARK MODE (High Contrast)
+================================ */
+.dark-mode {
+  --bg-main: #0f172a;  /* dark slate */
+  --bg-card: #1e293b;  /* deep blue-gray */
+  --bg-container: #1e293b;
+
+  --text-main: #e2e8f0;   /* soft white */
+  --text-light: #94a3b8;  /* muted text */
+  --text-inverse: #ffffff;
+  --text-outlined : #ffffff;
+  --table-bg : ##ffffff;
+
+  --header-gradient: linear-gradient(150deg, #0a2647, #051637, #3d2c8d);
+
+  --button-primary: #3b82f6;
+  --button-primary-hover: #2563eb;
+
+  --button-delete: #f87171;
+  --button-edit: #7c3aed;
+
+  --login-bg-gradient: linear-gradient(135deg, #0f172a, #1e293b, #312e81);
+   --table-header-bg: #141e2e;  /* deep navy */
+  --table-header-text: #e2e8f0;
+}
+
+
+/* ================================
+   🌑 NIGHT MODE (AMOLED, Low Light)
+================================ */
+.night-mode {
+  --bg-main: #000000;       /* full black */
+  --bg-card: #0d0d0d;
+  --bg-container: #0d0d0d;
+
+  --text-main: #e5e5e5;
+  --text-light: #9ca3af;
+  --text-inverse: #ffffff;
+
+  --header-gradient: linear-gradient(150deg, #000000, #0a0a0a, #1f1f1f);
+
+  --button-primary: #6d5dfc; 
+  --button-primary-hover: #5647e6;
+
+  --button-delete: #ff4d4d;
+  --button-edit: #8b5cf6;
+
+  --login-bg-gradient: linear-gradient(135deg, #000000, #0a0a0a, #1f1f1f);
+
+   --table-header-bg: #e5e9f2;   /* light gray */
+  --table-header-text: #1f2933;
+}
+
+body, p, h1, h2, h3, h4, h5, h6 {
+  color: var(--text-main);
+}
+
+.btn-add {
+  background-color: var(--button-primary) !important;
+}
+
+.btn-add:hover {
+  background-color: var(--button-primary-hover) !important;
+}
+
+.btn-delete {
+  background-color: var(--button-delete) !important;
+}
+
+.btn-edit {
+  background-color: var(--button-edit) !important;
+}
+
+.dark-toggle-btn {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+
+  background: #333;
+  color: white;
+  font-size: 22px;
+
+  padding: 14px 18px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: 0.25s ease;
+  z-index: 5000;
+  align-items: center;
+}
+
+.dark-toggle-btn:hover {
+  transform: scale(1.07);
+}
+.text-fields .MuiInputBase-input {
+  color: var(--text-inverse) !important; 
+}
+
+.text-fields label {
+  color: var(--text-light) !important;
+}
+
+.text-fields .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: var(--text-outlined) !important;
+}
+
+.text-fields .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--text-outlined) !important;
+}
+
+.text-fields .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--text-outlined) !important;
+}
+
+.text-fields .MuiSvgIcon-root {
+  color: var(--text-outlined) !important;
+}
+
+/* Applies background and text colors to all Paper containers */
+.MuiPaper-root {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+
+/* Table header */
+.MuiTableHead-root {
+  background-color: var(--bg-container) !important;
+}
+
+/* Each table row */
+.MuiTableRow-root {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+
+/* Table header background + text */
+.MuiTableHead-root .MuiTableCell-root {
+  background-color: var(--table-header-bg) !important;
+  color: var(--table-header-text) !important;
+  font-weight: 700 !important;
+}
+
+
+/* Table cells */
+.MuiTableCell-root {
+  color: var(--text-main) !important;
+  border-color: var(--text-light) !important;
+}
+
+/* TextField background + text */
+.MuiOutlinedInput-root {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+
+.MuiOutlinedInput-input {
+  color: var(--text-main) !important;
+}
+
+.MuiInputLabel-root {
+  color: var(--text-light) !important;
+}
+.paper-root {
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  background-color: var(--bg-main) !important;
+}
+
+.ems-root {
+  width: 100%;
+  background-color: var(--bg-main) !important;
+}
+

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import "../styles/LoginPage.css"
 import Typography from '@mui/material/Typography';
@@ -19,7 +19,7 @@ export default function LoginPage() {
     const [login, setLogin] = useState(true);
     const [responseData, setResponseData] = useState(null);
     const [responseError,setResponseError] = useState(null);
-    const { setUserData} = useLoginContext();
+    // const { userData,setUserData} = useLoginContext();
 
     const { showSnackbar } = useSnackbar();
     const {userLogin, userRegister} = useLogin();
@@ -61,15 +61,25 @@ export default function LoginPage() {
 
         if(data.success){
             setResponseData(data?.data);
-            setUserData(data?.data);
+            // setUserData(data?.data);
+            localStorage.setItem("userData",JSON.stringify(data?.data));
             navigate("/dashboard");
+            showSnackbar(`Hello ${watch("username") ?  watch("username") : "Anonymous"}, Welcome!`, "success");
         }
         else{
             setResponseError(data?.data)
+            showSnackbar(`Login failed : ${data?.data}`,"error");
         }
-        showSnackbar(`Hello ${watch("name") ? watch("name") : watch("email") ? watch("email") : "Anonymous"}, Welcome!`, "success");
     };
 
+
+    useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem("userData") || "null");
+        if(userData){
+            navigate("/dashboard");
+            showSnackbar("You are already logged in!","success");
+        }
+    },[])
 
     const {
         register,
@@ -93,7 +103,7 @@ export default function LoginPage() {
                     !login && <>
 
                        
-                        <TextField fullWidth id="outlined-basic-5" label="Name" variant="outlined"
+                        <TextField fullWidth className='text-fields' id="outlined-basic-5" label="Name" variant="outlined"
                             {...register("name", {
                                 required: "Name is required",
                                 minLength: {
@@ -106,6 +116,7 @@ export default function LoginPage() {
 
                         <TextField
                             select
+                            className='text-fields'
                             label="Roles"
                             fullWidth
                             InputLabelProps={{ shrink: true }}
@@ -121,8 +132,8 @@ export default function LoginPage() {
                                     <MenuItem value={temp?.value}>{temp?.name}</MenuItem>
                                 ))
                             }
-                        </TextField>
-                        <TextField id="outlined-basic-1" label="Email" variant="outlined"
+                        </TextField >
+                        <TextField className='text-fields' id="outlined-basic-1" label="Email" variant="outlined"
                             {...register("email", {
                                 required: "Email is required",
                                 pattern: {
@@ -134,7 +145,7 @@ export default function LoginPage() {
                             helperText={errors.email?.message} />
                     </>
                 }
-                 <TextField fullWidth id="outlined-basic-0" label="Username" variant="outlined"
+                 <TextField  className='text-fields' fullWidth id="outlined-basic-0" label="Username" variant="outlined"
                             {...register("username", {
                                 required: "Username is required",
                                 minLength: {
@@ -144,7 +155,7 @@ export default function LoginPage() {
                             })}
                             error={!!errors.name}
                             helperText={errors.name?.message} />
-                <TextField id="outlined-basic-2" label="Password" variant="outlined" type='password' {...register("password", {
+                <TextField className='text-fields' id="outlined-basic-2" label="Password" variant="outlined" type='password' {...register("password", {
                     required: "Password is required",
                     minLength: {
                         value: 6,
@@ -159,9 +170,6 @@ export default function LoginPage() {
                     helperText={errors.password?.message} />
                 {
                     login ? <Typography color={"primary"} sx={{ cursor: "pointer" }} onClick={handleLoginChange} variant="caption">Not a member? Sign up now!</Typography> : <Typography sx={{ cursor: "pointer" }} variant="caption" color={"primary"} onClick={handleLoginChange}>Already a member? Sign in</Typography>
-                }
-                {
-                    responseError && <Typography color={"error"} variant={"body2"}>{responseError}</Typography>
                 }
                 {
                     login ? <Button className='login-button' onClick={handleSubmit(handleLogin)} variant="contained">Sign in</Button> : <Button className='login-button' variant="contained" onClick={handleSubmit(handleLogin)}>Register</Button>

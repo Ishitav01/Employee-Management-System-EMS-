@@ -32,8 +32,9 @@ export const useLogin = () => {
                 password,
                 username,
                 name,
-                role : "ROLE_USER"
+                role : "ROLE_ADMIN"
             })
+
 
             const accessToken = response.data?.accessToken;
             const refreshToken = response.data?.refreshToken;
