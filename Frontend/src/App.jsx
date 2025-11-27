@@ -27,7 +27,7 @@ function App() {
       path : "/addEditEmployee",
       element : 
       <Suspense fallback={<LoadingPage />}>
-      <AddEditEmployeeyee />
+      <AddEditEmployee />
       </Suspense>
     }
   ])
