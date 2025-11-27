@@ -1,0 +1,99 @@
+/* Full page center alignment */
+.profile-page {
+  width: 100%;
+  height: 100vh;
+  background: #f3f4f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+/* Bigger Card */
+.profile-card {
+  width: 520px;
+  padding: 40px;
+  border-radius: 26px;
+  background: #fff;
+  box-shadow: 0px 18px 55px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e6e6e6;
+  transition: 0.25s ease-in-out;
+}
+
+.profile-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0px 22px 65px rgba(0, 0, 0, 0.16);
+}
+
+/* Top section */
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Bigger Avatar */
+.profile-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  font-size: 42px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Name + Email bigger */
+.profile-name {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #222;
+}
+
+.profile-email {
+  margin-top: 8px;
+  font-size: 18px;
+  color: #666;
+}
+
+/* Thicker Divider */
+.profile-divider {
+  height: 2px;
+  background: #ddd;
+  margin: 28px 0;
+}
+
+/* Bigger Rows */
+.profile-detail {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.label {
+  font-size: 18px;
+  color: #555;
+}
+
+.value {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+/* Bigger chips */
+.designation-tag {
+  padding: 6px 16px;
+  background: #eef0ff;
+  color: #4749bf;
+  border-radius: 14px;
+  font-size: 15px;
+}
+
+.salary-text {
+  font-size: 20px;
+  color: #111;
+}
