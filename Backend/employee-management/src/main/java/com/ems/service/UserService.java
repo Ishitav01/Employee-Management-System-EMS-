@@ -1,10 +1,7 @@
 package com.ems.service;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -47,12 +44,13 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public AppUser createUser(String username, String rawPassword, String email) {
+    public AppUser createUser(String name, String username, String rawPassword, String email, String role) {
         AppUser user = new AppUser();
+        user.setName(name);
         user.setUsername(username);
         user.setPassword(encoder.encode(rawPassword));
         user.setEmail(email);
-        user.setRole("ROLE_USER"); // default
+        user.setRole(role); // default
         return userRepo.save(user);
     }
 
