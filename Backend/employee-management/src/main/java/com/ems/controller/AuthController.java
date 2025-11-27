@@ -70,16 +70,21 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
         }
 
-        AppUser user = userService.createUser(req.getUsername(), req.getPassword(), req.getEmail());
+        AppUser user = userService.createUser(req.getName(), req.getUsername(), 
+                                            req.getPassword(), req.getEmail(), req.getRole());
 
         String accessToken = jwtUtil.generateAccessToken(user.getUsername());
         String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
 
         Map<String, Object> resp = new HashMap<>();
+
+        // User details
         resp.put("id", user.getId());
         resp.put("username", user.getUsername());
         resp.put("email", user.getEmail());
         resp.put("role", user.getRole());
+
+        // Returning tokens
         resp.put("accessToken", accessToken);
         resp.put("refreshToken", refreshToken);
 
@@ -95,8 +100,10 @@ public class AuthController {
 
     @Data
     public static class RegisterRequest {
+        private String name;
         private String username;
         private String password;
         private String email;
+        private String role;
     }
 }
