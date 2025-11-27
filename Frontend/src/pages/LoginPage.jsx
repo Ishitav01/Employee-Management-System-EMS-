@@ -11,7 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from '../context/SnackbarContext';
 import { DESIGNATIONS } from '../utils/designation';
 import { ROLES } from '../utils/roles';
-import { useLogin, useLoginContext } from '../context/UserContext';
+import {  useLoginContext } from '../context/UserContext';
+import { useLogin } from '../api/useLogin';
 
 export default function LoginPage() {
 
@@ -49,10 +50,10 @@ export default function LoginPage() {
         else{
             const jsonData = {
                 username : watch("username"),
+                email : watch("email"),
                 password : watch("password"),
                 name : watch("name"),
-                email : watch("email"),
-                designation : watch("designation")
+                role : watch("roles")
                 }
     
             data= await userRegister(jsonData);
@@ -90,17 +91,8 @@ export default function LoginPage() {
                 </Box>
                 {
                     !login && <>
-                        <TextField fullWidth id="outlined-basic-0" label="Username" variant="outlined"
-                            {...register("username", {
-                                required: "Username is required",
-                                minLength: {
-                                    value: 3,
-                                    message: "Username should be at least 3 characters",
-                                },
-                            })}
-                            error={!!errors.name}
-                            helperText={errors.name?.message} />
 
+                       
                         <TextField fullWidth id="outlined-basic-5" label="Name" variant="outlined"
                             {...register("name", {
                                 required: "Name is required",
@@ -130,18 +122,28 @@ export default function LoginPage() {
                                 ))
                             }
                         </TextField>
+                        <TextField id="outlined-basic-1" label="Email" variant="outlined"
+                            {...register("email", {
+                                required: "Email is required",
+                                pattern: {
+                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                    message: "Invalid email format"
+                                }
+                            })}
+                            error={!!errors.email}
+                            helperText={errors.email?.message} />
                     </>
                 }
-                <TextField id="outlined-basic-1" label="Email" variant="outlined"
-                    {...register("email", {
-                        required: "Email is required",
-                        pattern: {
-                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: "Invalid email format"
-                        }
-                    })}
-                    error={!!errors.email}
-                    helperText={errors.email?.message} />
+                 <TextField fullWidth id="outlined-basic-0" label="Username" variant="outlined"
+                            {...register("username", {
+                                required: "Username is required",
+                                minLength: {
+                                    value: 3,
+                                    message: "Username should be at least 3 characters",
+                                },
+                            })}
+                            error={!!errors.name}
+                            helperText={errors.name?.message} />
                 <TextField id="outlined-basic-2" label="Password" variant="outlined" type='password' {...register("password", {
                     required: "Password is required",
                     minLength: {
@@ -159,7 +161,7 @@ export default function LoginPage() {
                     login ? <Typography color={"primary"} sx={{ cursor: "pointer" }} onClick={handleLoginChange} variant="caption">Not a member? Sign up now!</Typography> : <Typography sx={{ cursor: "pointer" }} variant="caption" color={"primary"} onClick={handleLoginChange}>Already a member? Sign in</Typography>
                 }
                 {
-                    responseError && <Typography color={"error"} variant={"h6"}>{responseError}</Typography>
+                    responseError && <Typography color={"error"} variant={"body2"}>{responseError}</Typography>
                 }
                 {
                     login ? <Button className='login-button' onClick={handleSubmit(handleLogin)} variant="contained">Sign in</Button> : <Button className='login-button' variant="contained" onClick={handleSubmit(handleLogin)}>Register</Button>

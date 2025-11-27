@@ -1,11 +1,11 @@
 import axios from 'axios';
 import apiInterceptor from './apiInterceptor';
 
-const useLogin = () => {
-    const userLogin = async ({email,password}) => {
+export const useLogin = () => {
+    const userLogin = async ({username,password}) => {
         try{
-            const response = await apiInterceptor.post("/api/login",{
-                email,
+            const response = await axios.post("http://localhost:8080/auth/login",{
+                username,
                 password
             });
 
@@ -24,15 +24,15 @@ const useLogin = () => {
         }
     }
 
-    const userRegister = async ({username,name,email,roles,password}) => {
+    const userRegister = async ({username,email,password,name,roles}) => {
         try{
 
-            const response = await apiInterceptor.post("auth/register",{
+            const response = await axios.post("http://localhost:8080/auth/register",{
                 email,
-                name,
                 password,
                 username,
-                roles
+                name,
+                role : "ROLE_ADMIN"
             })
 
             const accessToken = response.data?.accessToken;

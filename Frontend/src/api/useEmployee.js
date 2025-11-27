@@ -1,7 +1,7 @@
 import axios from 'axios';
 import apiInterceptor from './apiInterceptor';
 
-const useEmployee = () => {
+export const useEmployee = () => {
 
     const addEmployee = async () => {
     
