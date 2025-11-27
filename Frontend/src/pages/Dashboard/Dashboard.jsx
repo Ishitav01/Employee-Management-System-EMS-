@@ -59,8 +59,8 @@ export default function Dashboard({setEditOpen, setAddOpen,setEmployeeData}) {
     setEditOpen(true);
   };
   const handleAddClick = () => {
-  setEmployeeData(null);   // no employee → add mode
-  setAddOpen(true);           // open popup
+  setEmployeeData(null);   
+  setAddOpen(true);         
 };
 
   return (

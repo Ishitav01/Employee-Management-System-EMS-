@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 
 const UserContext = createContext();
 
-export const useLogin = () => useContext(UserContext);
+export const useLoginContext = () => useContext(UserContext);
 
 export const UserProvider = ({children}) => {
 
