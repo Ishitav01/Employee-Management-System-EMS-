@@ -1,83 +1,45 @@
 package com.ems.entity;
 
-import java.util.Set;
-
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
+import lombok.Data;
 
-@Entity
+@Entity @Data
+@Table(name = "app_user")
 public class AppUser {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String password; // encoded
+
+    @Column(unique = true, nullable = false)
     private String email;
-    private String password; // stored encoded
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    private Set<String> roles; // e.g. "ROLE_ADMIN", "ROLE_USER", "ROLE_CEO"
+    // single role: e.g. "ROLE_CEO", "ROLE_ADMIN", "ROLE_USER"
+    @Column(nullable = false)
+    private String role;
 
-    // constructors, getters, setters
+    public AppUser() {}
 
-    public AppUser() {
-    }
-
-    public AppUser(String username,String email, String password, Set<String> roles) {
+    public AppUser(String username, String password, String email, String role) {
         this.username = username;
-        this.email=email;
         this.password = password;
-        this.roles = roles;
+        this.email = email;
+        this.role = role;
     }
 
-    // getters and setters...
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
-
-    public void setEmail(String email){
-        this.email=email;
-    }
-    public String getEmail(){
-        return email;
-    }
+    // getters & setters are cretaed by Lombok @Data
+    
 }

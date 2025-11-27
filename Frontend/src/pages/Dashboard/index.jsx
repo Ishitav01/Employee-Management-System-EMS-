@@ -8,6 +8,7 @@ const DashboardPage = () => {
     const [editOpen, setEditOpen] = useState(false);
     const [addOpen,setAddOpen] = useState(false)
     const [employeeData,setEmployeeData] = useState(null);
+    
 
     return (
         <>

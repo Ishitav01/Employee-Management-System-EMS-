@@ -1,6 +1,5 @@
 {
-    "java.project.sourcePaths": [
-        "Backend/employee-backend/src"
-    ],
-    "java.configuration.updateBuildConfiguration": "interactive"
+  "java.project.sourcePaths": ["Backend/employee-backend/src"],
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.compile.nullAnalysis.mode": "automatic"
 }
