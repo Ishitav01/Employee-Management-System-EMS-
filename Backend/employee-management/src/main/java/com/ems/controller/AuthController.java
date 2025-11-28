@@ -37,10 +37,21 @@ public class AuthController {
 
     @PostMapping("/create-ceo")
     public ResponseEntity<?> createCEO(){
+        Map<String, String> resp = new HashMap<>();
+        resp.put("username", "ceo_user");
+        resp.put("password", "ceo123");
+
+
+        //Ensures only one CEO can be created in db
+        if(userService.existsByUsername("ceo_user")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("CEO user already exists. "+resp.toString());
+        }
+
         userService.createCEO();
         emsService.createCEO(); 
-        
-        return ResponseEntity.status(HttpStatus.CREATED).body("CEO created./nUsername: ceo_user /nPassword: ceo123");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(resp);
     }
 
     @PostMapping("/login")
