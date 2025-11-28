@@ -3,6 +3,10 @@ import apiInterceptor from './apiInterceptor';
 
 export const useEmployee = () => {
 
+    const getAllEmployees = async () => {
+        
+    }
+
     const addEmployee = async () => {
     
     }
