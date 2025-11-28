@@ -1,5 +1,6 @@
 package com.ems.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,13 +45,13 @@ public class CeoController {
                     .body("Username already exists");
         }
 
-        AppUser newAdmin = userService.createAdmin(req.getUsername(), req.getPassword(), req.getEmail());
+        AppUser newAdmin = userService.createAdmin(req.getName(), req.getUsername(), req.getPassword(), req.getEmail());
 
-        Map<String, Object> resp = Map.of(
-                "id", newAdmin.getId(),
-                "username", newAdmin.getUsername(),
-                "email", newAdmin.getEmail(),
-                "password", newAdmin.getPassword());
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("id", newAdmin.getId());
+        resp.put("name", newAdmin.getName());
+        resp.put("username", newAdmin.getUsername());
+        resp.put("email", newAdmin.getEmail());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resp);
     }
@@ -81,21 +82,21 @@ public class CeoController {
     }
 
     @PutMapping("/update-admin")
-    public ResponseEntity<?> updateAdmin(@RequestBody AppUser updatedUser) {
+    public ResponseEntity<?> updateAdmin(@RequestBody AdminRequest req) {
         try {
-            AppUser user = userService.getByUsername(updatedUser.getUsername());
+            AppUser user = userService.getByUsername(req.getUsername());
 
             if (!("ROLE_ADMIN".equals(user.getRole()))) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("User is not an ADMIN");
             }
 
-            userService.updateUser(updatedUser);
+            userService.updateUser(req.getName(), req.getUsername(), req.getPassword(), req.getEmail());
             return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Admin details updated successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("User with username " + updatedUser.getUsername() + " not found!");
+                    .body("Unexpected Error occured: "+ e.getMessage());
         }
     }
 
@@ -111,6 +112,7 @@ public class CeoController {
 
     @Data
     public static class AdminRequest {
+        private String name;
         private String username;
         private String password;
         private String email;

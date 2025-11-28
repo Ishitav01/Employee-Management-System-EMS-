@@ -66,15 +66,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(AppUser newUser) {
-        AppUser existingUser = userRepo.findByUsername(newUser.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User with " + newUser.getUsername() + " not found"));
-
-        existingUser.setName(newUser.getName());
-        existingUser.setEmail(newUser.getEmail());
-        existingUser.setPassword(newUser.getPassword());
-        existingUser.setRole(newUser.getRole());
-        existingUser.setUsername(newUser.getUsername());
+    public void updateUser(String name, String username, String rawPassword, String email) {
+        AppUser existingUser = userRepo.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User with " + username + " not found"));
+        
+        existingUser.setName(name);
+        existingUser.setEmail(email);
+        existingUser.setPassword(encoder.encode(rawPassword));
+        existingUser.setUsername(username);
 
         userRepo.save(existingUser);
     }
@@ -89,8 +88,9 @@ public class UserServiceImpl implements UserService {
 
     // create admin (CEO will call controller to create admin)
     @Override
-    public AppUser createAdmin(String username, String rawPassword, String email) {
+    public AppUser createAdmin(String name, String username, String rawPassword, String email) {
         AppUser user = new AppUser();
+        user.setName(name);
         user.setUsername(username);
         user.setPassword(encoder.encode(rawPassword));
         user.setEmail(email);
