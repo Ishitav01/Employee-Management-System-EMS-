@@ -6,10 +6,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Entity
-@Table(name = "employee")
+@Entity @Table(name = "employee")
 @Data
 public class Employee {
 
@@ -17,17 +18,22 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String name;
+
+    @NotNull
     private String designation;
+
+    @Min(value = 0, message = "Salary must be positive")
     private Double salary;
 
     @Column(unique = true)
     private String email;
 
-    
-    private Long createdBy;
+    //Id of the user from app_user who created this employee
+    private Long createdBy; 
 
-    public Employee() {
-    }
+
+    //Getters and Setters are created by Lombok @Data
    
 }
