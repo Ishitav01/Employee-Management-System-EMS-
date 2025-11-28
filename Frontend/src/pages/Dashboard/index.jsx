@@ -16,18 +16,17 @@ const DashboardPage = () => {
 
     const {showSnackbar} = useSnackbar();
 
-    useEffect(() => {
-      const userData = JSON.parse(localStorage.getItem("userData") || "null");
-      if(!userData){
-        navigate("/");
-        showSnackbar("You are not logged in!","error");
-      }
-      setUser(userData);
-    },[])
-
+    // useEffect(() => {
+    //   const userData = JSON.parse(localStorage.getItem("userData") || "null");
+    //   if(!userData){
+    //     navigate("/");
+    //     showSnackbar("You are not logged in!","error");
+    //   }
+    //   setUser(userData);
+    // },[])
     return (
         <>
-        <Dashboard  user={user} setEditOpen={setEditOpen} setAddOpen={setAddOpen} setEmployeeData={setEmployeeData}/>
+        <Dashboard  user={{role : "ROLE_ADMIN"}} setEditOpen={setEditOpen} setAddOpen={setAddOpen} setEmployeeData={setEmployeeData}/>
         { editOpen && (
                               <AddEditEmployee
                                 open={editOpen}

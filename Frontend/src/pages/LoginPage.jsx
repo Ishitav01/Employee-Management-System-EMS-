@@ -73,13 +73,13 @@ export default function LoginPage() {
     };
 
 
-    useEffect(() => {
-        const userData = JSON.parse(localStorage.getItem("userData") || "null");
-        if (userData) {
-            navigate("/dashboard");
-            showSnackbar("You are already logged in!", "success");
-        }
-    }, [])
+    // useEffect(() => {
+    //     const userData = JSON.parse(localStorage.getItem("userData") || "null");
+    //     if (userData) {
+    //         navigate("/dashboard");
+    //         showSnackbar("You are already logged in!", "success");
+    //     }
+    // }, [])
 
     const {
         register,
