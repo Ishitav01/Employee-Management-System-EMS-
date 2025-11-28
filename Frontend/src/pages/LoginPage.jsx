@@ -11,18 +11,18 @@ import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from '../context/SnackbarContext';
 import { DESIGNATIONS } from '../utils/designation';
 import { ROLES } from '../utils/roles';
-import {  useLoginContext } from '../context/UserContext';
+import { useLoginContext } from '../context/UserContext';
 import { useLogin } from '../api/useLogin';
 
 export default function LoginPage() {
 
     const [login, setLogin] = useState(true);
     const [responseData, setResponseData] = useState(null);
-    const [responseError,setResponseError] = useState(null);
+    const [responseError, setResponseError] = useState(null);
     // const { userData,setUserData} = useLoginContext();
 
     const { showSnackbar } = useSnackbar();
-    const {userLogin, userRegister} = useLogin();
+    const { userLogin, userRegister } = useLogin();
 
     const navigate = useNavigate();
 
@@ -31,56 +31,55 @@ export default function LoginPage() {
         setValue("name", "");
         setValue("password", "");
         setValue("designation", "");
-        setValue("username","");
+        setValue("username", "");
         setLogin(prevState => !prevState);
         reset();
     }
 
     const handleLogin = async (data) => {
-        
+
         var data;
 
-        if(login){
+        if (login) {
             const jsonData = {
-            username : watch("username"),
-            password : watch("password")
+                username: watch("username"),
+                password: watch("password")
             }
 
-            data= await userLogin(jsonData);
+            data = await userLogin(jsonData);
         }
-        else{
+        else {
             const jsonData = {
-                username : watch("username"),
-                email : watch("email"),
-                password : watch("password"),
-                name : watch("name"),
-                role : watch("roles")
-                }
-    
-            data= await userRegister(jsonData);
+                username: watch("username"),
+                email: watch("email"),
+                password: watch("password"),
+                name: watch("name"),
+                role: watch("roles")
+            }
+
+            data = await userRegister(jsonData);
         }
 
-        if(data.success){
+        if (data.success) {
             setResponseData(data?.data);
-            localStorage.setItem("userData",JSON.stringify(data?.data));
+            localStorage.setItem("userData", JSON.stringify(data?.data));
+            showSnackbar(`Hello ${watch("username") ? watch("username") : "Anonymous"}, Welcome!`, "success");
             navigate("/dashboard");
-            showSnackbar(`Hello ${watch("username") ?  watch("username") : "Anonymous"}, Welcome!`, "success");
         }
-        else{
-            console.log(data);
+        else {
             setResponseError(data?.data)
-            showSnackbar(`Login failed : ${data?.data}`,"error");
+            showSnackbar(`Login failed : ${data?.data}`, "error");
         }
     };
 
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem("userData") || "null");
-        if(userData){
+        if (userData) {
             navigate("/dashboard");
-            showSnackbar("You are already logged in!","success");
+            showSnackbar("You are already logged in!", "success");
         }
-    },[])
+    }, [])
 
     const {
         register,
@@ -98,12 +97,11 @@ export default function LoginPage() {
                 <Box className="login-header">
                     <AccountCircleIcon className='icon' />
                     <Typography variant='h5' fontWeight={600} fontStyle={"oblique"}>Employee Management System</Typography>
-                    {/* <Typography className='animated-gradient' variant='h5'>Employee Management System</Typography> */}
                 </Box>
                 {
                     !login && <>
 
-                       
+
                         <TextField fullWidth className='text-fields' id="outlined-basic-5" label="Name" variant="outlined"
                             {...register("name", {
                                 required: "Name is required",
@@ -124,13 +122,33 @@ export default function LoginPage() {
                             {...register("roles", {
                                 required: "Roles is required"
                             })}
-                            error={!!errors.designation}
-                            helperText={errors.designation?.message}
+                            error={!!errors.roles}
+                            helperText={errors.roles?.message}
                             defaultValue={"ROLE_USER"}
                         >
                             {
                                 ROLES.map((temp) => (
                                     <MenuItem value={temp?.value}>{temp?.name}</MenuItem>
+                                ))
+                            }
+                        </TextField >
+
+                        <TextField
+                            select
+                            className='text-fields'
+                            label="Designation"
+                            fullWidth
+                            InputLabelProps={{ shrink: true }}
+                            {...register("designation", {
+                                required: "Designation is required"
+                            })}
+                            error={!!errors.designation}
+                            helperText={errors.designation?.message}
+                            defaultValue={"HR"}
+                        >
+                            {
+                                DESIGNATIONS.map((temp) => (
+                                    <MenuItem value={temp}>{temp}</MenuItem>
                                 ))
                             }
                         </TextField >
@@ -144,18 +162,25 @@ export default function LoginPage() {
                             })}
                             error={!!errors.email}
                             helperText={errors.email?.message} />
+
+                        <TextField fullWidth className='text-fields' id="outlined-basic-5" label="Salary" variant="outlined"
+                            {...register("salary", {
+                                required: "Salary is required"
+                            })}
+                            error={!!errors.salary}
+                            helperText={errors.salary?.message} />
                     </>
                 }
-                 <TextField  className='text-fields' fullWidth id="outlined-basic-0" label="Username" variant="outlined"
-                            {...register("username", {
-                                required: "Username is required",
-                                minLength: {
-                                    value: 3,
-                                    message: "Username should be at least 3 characters",
-                                },
-                            })}
-                            error={!!errors.name}
-                            helperText={errors.name?.message} />
+                <TextField className='text-fields' fullWidth id="outlined-basic-0" label="Username" variant="outlined"
+                    {...register("username", {
+                        required: "Username is required",
+                        minLength: {
+                            value: 3,
+                            message: "Username should be at least 3 characters",
+                        },
+                    })}
+                    error={!!errors.name}
+                    helperText={errors.name?.message} />
                 <TextField className='text-fields' id="outlined-basic-2" label="Password" variant="outlined" type='password' {...register("password", {
                     required: "Password is required",
                     minLength: {

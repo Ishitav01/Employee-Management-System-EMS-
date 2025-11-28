@@ -21,24 +21,6 @@
     background-color: var(--bg-card);
 }
 
-/* .animated-gradient {
-  font-size: 2rem;
-  font-weight: bold;
-  background: linear-gradient(90deg, #ff7e5f, #86a8e7, #91eae4);
-  background-size: 200% 200%;
-  animation: gradientMove 4s ease infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-@keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-} */
-
-
-
 
 .login-header{
     display: flex;
