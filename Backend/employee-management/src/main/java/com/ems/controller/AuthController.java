@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ems.entity.AppUser;
-import com.ems.repository.UserRepository;
+import com.ems.entity.Employee;
+import com.ems.service.EmsService;
 import com.ems.service.UserService;
 import com.ems.utility.JwtUtil;
 
@@ -33,7 +33,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
     @Autowired
-    private UserRepository userRepository;
+    private EmsService emsService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
@@ -47,10 +47,14 @@ public class AuthController {
             String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
 
             Map<String, Object> resp = new HashMap<>();
+
+            // User details
             resp.put("id", user.getId());
             resp.put("username", user.getUsername());
             resp.put("email", user.getEmail());
             resp.put("role", user.getRole());
+
+            // Returning tokens
             resp.put("accessToken", accessToken);
             resp.put("refreshToken", refreshToken);
 
@@ -69,18 +73,24 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
         try{
-            if (userRepository.findByUsername(req.getUsername()).isPresent()) {
+            if (userService.existsByUsername(req.getUsername())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username " + req.getUsername() + " already exists");
             }
-            else if (userRepository.findByEmail(req.getEmail()).isPresent()) {
+            else if (userService.existsByEmail(req.getEmail())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email " + req.getEmail() + " already exists");
             }
             else if(req.getRole().equals("ROLE_CEO") || req.getRole().equals("CEO")) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot register as CEO");
             }
 
-            AppUser user = userService.createUser(req.getName(), req.getUsername(), 
-                                                req.getPassword(), req.getEmail(), req.getRole());
+            // Create user and save in app_user table
+            AppUser user = userService.createUser(req.getName(), req.getUsername(), req.getPassword(), req.getEmail(), req.getRole());
+            
+            //Create employee and save in employee table
+            Employee employee = emsService.createEmployee(
+                    req.getName(), req.getEmail(), req.getDesignation(), req.getSalary(), user.getId()
+            );
+            
 
             String accessToken = jwtUtil.generateAccessToken(user.getUsername());
             String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
@@ -92,6 +102,9 @@ public class AuthController {
             resp.put("username", user.getUsername());
             resp.put("email", user.getEmail());
             resp.put("role", user.getRole());
+
+            // Employee details
+            resp.put("employee", employee);
 
             // Returning tokens
             resp.put("accessToken", accessToken);
@@ -118,5 +131,8 @@ public class AuthController {
         private String password;
         private String email;
         private String role;
+
+        private double salary;
+        private String designation;
     }
 }

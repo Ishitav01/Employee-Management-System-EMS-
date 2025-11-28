@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +36,6 @@ public class CeoController {
 
     // CEO can create admin (or use AdminController with security constraint)
     @PostMapping("/create-admin")
-    @PreAuthorize("hasRole('CEO')")
     public ResponseEntity<?> createAdmin(@RequestBody AdminRequest req) {
         Boolean userExists = userService.existsByUsername(req.getUsername());
 
@@ -58,7 +56,6 @@ public class CeoController {
     }
 
     @DeleteMapping("/remove-admin")
-    @PreAuthorize("hasRole('CEO')")
     public ResponseEntity<?> removeAdmin(@RequestParam String username) {
 
         try {
@@ -84,7 +81,6 @@ public class CeoController {
     }
 
     @PutMapping("/update-admin")
-    @PreAuthorize("hasRole('CEO')")
     public ResponseEntity<?> updateAdmin(@RequestBody AppUser updatedUser) {
         try {
             AppUser user = userService.getByUsername(updatedUser.getUsername());
@@ -104,13 +100,11 @@ public class CeoController {
     }
 
     @GetMapping("/all-users")
-    @PreAuthorize("hasRole('CEO')")
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(userService.findAllUsers());
     }
 
     @GetMapping("/all-employees")
-    // @PreAuthorize("hasRole('CEO')")
     public ResponseEntity<?> getAllEmployees() {
         return ResponseEntity.ok(emsService.getAllEmployees());
     }

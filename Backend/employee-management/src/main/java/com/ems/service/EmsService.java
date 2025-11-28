@@ -11,4 +11,5 @@ public interface EmsService {
     public Employee getEmployeeById(Long id);
     public void updateEmployee(Employee employee);
     public void deleteEmployee(Long id);
+    public Employee createEmployee(String name, String email, String designation, double salary, Long id);
 }

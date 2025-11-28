@@ -50,6 +50,11 @@ public class UserServiceImpl implements UserService {
     } 
 
     @Override
+    public Boolean existsByEmail(String email) {
+        return userRepo.findByEmail(email).isPresent();
+    }
+
+    @Override
     public AppUser createUser(String name, String username, String rawPassword, String email, String role) {
         AppUser user = new AppUser();
         user.setName(name);

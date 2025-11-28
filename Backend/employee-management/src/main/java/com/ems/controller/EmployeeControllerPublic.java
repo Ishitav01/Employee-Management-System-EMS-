@@ -8,13 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ems.entity.AppUser;
 import com.ems.entity.Employee;
+import com.ems.exceptions.EmployeeNotFoundException;
 import com.ems.repository.EmsRepository;
 import com.ems.repository.UserRepository;
-import com.ems.exceptions.EmployeeNotFoundException;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -25,8 +28,7 @@ public class EmployeeControllerPublic {
     @Autowired
     private UserRepository userRepository;
 
-    // User (ROLE_USER) can view only their employee details if an employee row
-    // exists with same email
+    // User (ROLE_USER) can view only their employee details if an employee row exists with same email
     @GetMapping("/me")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> myEmployeeDetails(Authentication auth) {
@@ -41,8 +43,7 @@ public class EmployeeControllerPublic {
         return ResponseEntity.ok(op.get());
     }
 
-    // you can also expose /api/employees/{id} protected: only CEO or admin(owner)
-    // can view
+    // you can also expose /api/employees/{id} protected: only CEO or admin(owner) can view
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('CEO','ADMIN')")
     public ResponseEntity<?> getById(@PathVariable Long id, Authentication auth) {
