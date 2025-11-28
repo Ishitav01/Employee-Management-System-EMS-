@@ -30,7 +30,7 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    // Create employee — set createdBy to current admin's userId
+    // Create employee — set createdBy to current admin's userId.
     @PostMapping
     public ResponseEntity<?> createEmployee(@RequestBody Employee emp, Authentication auth) {
         try {
