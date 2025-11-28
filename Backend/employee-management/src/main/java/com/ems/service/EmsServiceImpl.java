@@ -21,6 +21,20 @@ public class EmsServiceImpl implements EmsService {
     @Autowired
     private UserRepository userRepository;
 
+
+    @Override
+    public Employee createEmployee(String name, String email, String designation, double salary, Long createdBy) {
+        Employee employee = new Employee();
+        employee.setName(name);
+        employee.setEmail(email);
+        employee.setDesignation(designation);
+        employee.setSalary(salary);
+        employee.setCreatedBy(createdBy);
+
+        emsRepository.save(employee);
+        return employee;
+    }
+
     @Override
     public Employee addEmployee(Employee employee) {
         Optional.ofNullable(employee).map(emp -> emp)

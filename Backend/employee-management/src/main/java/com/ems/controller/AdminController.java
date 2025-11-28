@@ -32,7 +32,6 @@ public class AdminController {
 
     // Create employee — set createdBy to current admin's userId
     @PostMapping
-    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createEmployee(@RequestBody Employee emp, Authentication auth) {
         AppUser user = userService.getByUsername(auth.getName()); // logged-in admin username
         emp.setCreatedBy(user.getId());
@@ -42,7 +41,6 @@ public class AdminController {
 
     // Admin can view only employees they created.
     @GetMapping
-    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getMyEmployees(Authentication auth) {
         AppUser user = userService.getByUsername(auth.getName());
         
@@ -55,7 +53,6 @@ public class AdminController {
 
     // Admin update only their created employees
     @PutMapping
-    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateEmployee(@RequestBody Employee update, Authentication auth) {
         AppUser user = userService.getByUsername(auth.getName());
         Employee employee = emsService.getEmployeeById(update.getId());
@@ -69,7 +66,6 @@ public class AdminController {
     }
 
     @DeleteMapping
-    // @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteEmployee(@RequestParam Long id, Authentication auth) {
         AppUser user = userService.getByUsername(auth.getName());
         Employee employee = emsService.getEmployeeById(id);
