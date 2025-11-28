@@ -2,6 +2,7 @@ package com.ems.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -52,6 +53,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean existsByEmail(String email) {
         return userRepo.findByEmail(email).isPresent();
+    }
+
+    @Override
+    public void saveUser(AppUser user) {
+        Optional.ofNullable(user).map(u -> u)
+            .orElseThrow(() -> new RuntimeException("User object is null"));
+        userRepo.save(user);   
     }
 
     @Override
@@ -119,5 +127,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<AppUser> findAllUsers() { 
         return userRepo.findAll(); 
+    }
+
+    @Override
+    public void createCEO(){
+        AppUser user = new AppUser();
+        user.setId(100L);
+        user.setName("Anand Birje");
+        user.setUsername("ceo_user");
+        user.setPassword(encoder.encode("ceo123"));
+        user.setEmail("ceo@example.com");
+        user.setRole("ROLE_CEO");
+
+        userRepo.save(user);
     }
 }
