@@ -35,6 +35,14 @@ public class AuthController {
     @Autowired
     private EmsService emsService;
 
+    @PostMapping("/create-ceo")
+    public ResponseEntity<?> createCEO(){
+        userService.createCEO();
+        emsService.createCEO(); 
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body("CEO created./nUsername: ceo_user /nPassword: ceo123");
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         try {

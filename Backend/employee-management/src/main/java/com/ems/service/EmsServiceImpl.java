@@ -40,7 +40,7 @@ public class EmsServiceImpl implements EmsService {
         Optional.ofNullable(employee).map(emp -> emp)
             .orElseThrow(() -> new EmployeeNotFoundException("Employee object is null"));
         
-            emsRepository.save(employee);
+        emsRepository.save(employee);
         return employee;
     }
 
@@ -96,5 +96,19 @@ public class EmsServiceImpl implements EmsService {
                 .orElseThrow(() -> new UserNotFoundException("User with " + userId + " not found"));
         
         return emsRepository.findAllByCreatedBy(userId);
+    }
+
+    @Override
+    public void createCEO() {
+        Employee emp = new Employee();
+        emp.setId(100L);
+        emp.setName("Anand Birje");
+        emp.setEmail("ceo@example.com");
+        emp.setDesignation("Chief Executive Officer"); 
+        emp.setSalary(2500000.00);
+        emp.setCreatedBy(100L);
+
+        emsRepository.save(emp);
+        
     }
 }
