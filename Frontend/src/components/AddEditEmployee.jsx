@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, Watch } from "react-hook-form";
 import {
   TextField,
   Button,
@@ -10,9 +10,14 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import "../styles/AddEditEmployee.css";
+import { useEmployee } from "../api/useEmployee";
+import { useSnackbar } from "../context/SnackbarContext";
 
 export default function AddEditEmployee({ open, handleClose, data }) {
   const isEdit = !!data;
+
+  const {editEmployee, addEmployee} = useEmployee();
+  // const {showSnackbar} = useSnackbar();
 
   const {
     register,
@@ -37,23 +42,24 @@ export default function AddEditEmployee({ open, handleClose, data }) {
         salary: "",
       });
     }
+    console.log(data?.designation);
+    
   }, [isEdit, data, reset]);
 
   const onSubmit = async (formData) => {
     if (isEdit) {
-      console.log("Updating employee:", data.id, formData);
-      await fetch(`http://localhost:8080/employees/${data.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const updatedData = {
+        id : data.id,
+        ...formData
+      }
+      await editEmployee(updatedData);
     } else {
-      console.log("Adding new employee:", formData);
-      await fetch(`http://localhost:8080/employees`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const userData = JSON.parse(localStorage.getItem("userData") || null);
+      const emp = {
+        ...formData,
+        createdBy : userData?.id
+      }
+      await addEmployee(emp);
     }
 
     handleClose();
@@ -105,6 +111,7 @@ export default function AddEditEmployee({ open, handleClose, data }) {
           label="Designation"
           fullWidth
           margin="normal"
+          defaultValue={data?.designation || ""} 
           InputLabelProps={{ shrink: true }}
           {...register("designation", { required: "Designation is required" })}
           error={!!errors.designation}

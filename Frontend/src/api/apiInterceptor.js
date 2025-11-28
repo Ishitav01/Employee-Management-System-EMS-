@@ -12,7 +12,7 @@ apiInterceptor.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    return token;
+    return config;
   },
   (error) => {
     return Promise.reject(error);
@@ -24,10 +24,9 @@ apiInterceptor.interceptors.response.use(
     return response;
   },
   async (error) => {
-    const ShowSnackbar={useSnackbar};
     if (error.response && error.response.status === 401) {
       try {
-        // Call refresh endpoint
+
         const refreshResponse = await axios.get(
           "http://localhost:8080/auth/refresh",
           {
@@ -39,18 +38,17 @@ apiInterceptor.interceptors.response.use(
 
         const newAccessToken = refreshResponse.data.accessToken;
         const newRefreshToken=refreshResponse.data.refreshToken;
-        // Store updated token
+
         localStorage.setItem("accessToken", newAccessToken);
         localStorage.setItem("refreshToken", newRefreshToken);
-        // Retry original request with new token
+
         error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
 
         return apiInterceptor(error.config);
 
       } catch (refreshError) {
-        ShowSnackbar("Refresh token failed, redirecting to login...");
         localStorage.clear();
-        window.location.href = "/";//return to login
+        window.location.href = "/";
       }
     }
 

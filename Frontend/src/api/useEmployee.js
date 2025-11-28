@@ -11,27 +11,24 @@ export const useEmployee = () => {
       return {success : false , data : error.response?.data || "Error fetching employees"};
     }
   }
-  const getAllEmployeesAdmin = async ({username}) => {
+  const getAllEmployeesAdmin = async () => {
     try {
-      const response = await apiInterceptor.get("http://localhost:8080//api/admin/employees",{
-        username 
-      });
+      const response = await apiInterceptor.get("http://localhost:8080/api/admin/employees");
       return response.data; // return employee list
     } catch (error) {
       return {success : false , data : error.response?.data || "Error fetching employees"};
     }
   }
 
-    const addEmployee = async ({emp}) => {
+    const addEmployee = async (emp) => {
   try {
     const response = await apiInterceptor.post(
-      "http://localhost:8080/api/admin/employees",{
-          ...emp
-      }
+      "http://localhost:8080/api/admin/employees",emp
     );
 
     return { success: true, data: response.data||"Employee added" };
   } catch (error) {
+    console.log(error);
     return {
       success: false,
       data: error.response?.data || "Error adding the employee"
@@ -40,13 +37,14 @@ export const useEmployee = () => {
 };
 
 
-    const editEmployee = async ({username}) => {
+    const editEmployee = async (updatedData) => {
     try {
+      
+      console.log("Updating employee in hook:", updatedData);
     const response = await apiInterceptor.put(
       "http://localhost:8080/api/admin/employees",
       {
-        username,
-        ...update   // spread updated fields
+        ...updatedData  
       }
     );
     return { success: true, data: response.data }
@@ -56,10 +54,12 @@ export const useEmployee = () => {
       data: error.response?.data || "Error updating employee"
     }
   }}
-    const deleteEmployee = async (username) => {
+    const deleteEmployee = async (id) => {
         try{
             const response = apiInterceptor.delete("http://localhost:8080/api/admin/employees",{
-                username
+                params : {
+                  id
+                }
             })
             return { success: true, data: response.data || "Employee deleted" };
         }
