@@ -24,12 +24,10 @@ public class Employee {
     @Column(unique = true)
     private String email;
 
-    // username of creator (admin who created this employee)
+    
     private Long createdBy;
 
     public Employee() {
     }
-
-    // getters & setters created by Lombok @Data.
    
 }
