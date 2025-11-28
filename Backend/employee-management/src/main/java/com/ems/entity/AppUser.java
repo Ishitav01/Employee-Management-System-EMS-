@@ -40,6 +40,6 @@ public class AppUser {
         this.role = role;
     }
 
-    // getters & setters are cretaed by Lombok @Data
+    // getters & setters are created by Lombok @Data
     
 }

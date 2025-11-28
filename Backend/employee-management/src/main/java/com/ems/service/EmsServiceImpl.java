@@ -106,7 +106,7 @@ public class EmsServiceImpl implements EmsService {
         emp.setEmail("ceo@example.com");
         emp.setDesignation("Chief Executive Officer"); 
         emp.setSalary(2500000.00);
-        emp.setCreatedBy(100L);
+        emp.setCreatedBy(userRepository.findByUsername("ceo_user").get().getId());
 
         emsRepository.save(emp);
         
