@@ -22,12 +22,12 @@ export const useEmployee = () => {
     }
   }
 
-    const addEmployee = async ({username,emp}) => {
+    const addEmployee = async ({emp}) => {
   try {
     const response = await apiInterceptor.post(
-      "http://localhost:8080/api/admin/employees",
-      username,
-      emp
+      "http://localhost:8080/api/admin/employees",{
+          ...emp
+      }
     );
 
     return { success: true, data: response.data||"Employee added" };
@@ -40,7 +40,7 @@ export const useEmployee = () => {
 };
 
 
-    const editEmployee = async ({ username, update }) => {
+    const editEmployee = async ({username}) => {
     try {
     const response = await apiInterceptor.put(
       "http://localhost:8080/api/admin/employees",
