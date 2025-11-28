@@ -20,6 +20,8 @@ import com.ems.entity.Employee;
 import com.ems.service.EmsService;
 import com.ems.service.UserService;
 
+import lombok.Data;
+
 @RestController
 @RequestMapping("/api/admin/employees")
 public class AdminController {
@@ -32,34 +34,43 @@ public class AdminController {
 
     // Create employee — set createdBy to current admin's userId.
     @PostMapping
-    public ResponseEntity<?> createEmployee(@RequestBody Employee emp, Authentication auth) {
+    public ResponseEntity<?> createEmployee(@RequestBody EmployeeRequest emp, Authentication auth) {
         try {
             AppUser user = userService.getByUsername(auth.getName()); // logged-in admin username
-            emp.setCreatedBy(user.getId());
-            Employee saved = emsService.addEmployee(emp);
+
+            Employee saved = emsService.createEmployee(emp.getName(), emp.getEmail(), emp.getDesignation(), 
+                                        emp.getSalary(), user.getId());
+
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating employee: " + e.getMessage());
+        } 
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Error creating employee: " + e.getMessage());
         }
     }
 
-    // Admin can view only employees they created.
+    // Admin can only view employees they created.
     @GetMapping
     public ResponseEntity<?> getMyEmployees(Authentication auth) {
         try {
             AppUser user = userService.getByUsername(auth.getName());
 
             List<Employee> allEmployees = emsService.findAllByCreatedBy(user.getId());
+
             if (allEmployees.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You have not created any employees");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("You have not created any employees");
             }
+
             return ResponseEntity.ok(allEmployees);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error fetching employees: " + e.getMessage());
+        } 
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Error fetching employees: " + e.getMessage());
         }
     }
 
-    // Admin update only their created employees
+    // Admin can update only their created employees
     @PutMapping
     public ResponseEntity<?> updateEmployee(@RequestBody Employee update, Authentication auth) {
         try {
@@ -67,13 +78,16 @@ public class AdminController {
             Employee employee = emsService.getEmployeeById(update.getId());
 
             if (user.getId() != employee.getCreatedBy()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only update employees you created");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("You can only update employees you created");
             }
 
             emsService.updateEmployee(update);
             return ResponseEntity.ok(update);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error updating employee: " + e.getMessage());
+        } 
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Error updating employee: " + e.getMessage());
         }
     }
 
@@ -85,12 +99,26 @@ public class AdminController {
             Employee employee = emsService.getEmployeeById(id);
 
             if (user.getId() != employee.getCreatedBy()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only delete employees you created");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("You can only delete employees you created");
             }
+
             emsService.deleteEmployee(id);
+
             return ResponseEntity.ok("Employee, " + employee.getName() + " deleted");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error deleting employee: " + e.getMessage());
+        } 
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Error deleting employee: " + e.getMessage());
         }
+    }
+
+    // Employee DTO
+    @Data
+    class EmployeeRequest {
+        private String name;
+        private String email;
+        private String designation;
+        private double salary;
     }
 }

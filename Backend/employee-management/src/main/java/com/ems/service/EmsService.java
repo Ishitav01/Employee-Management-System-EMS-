@@ -10,6 +10,7 @@ public interface EmsService {
     public List<Employee> findAllByCreatedBy(Long userId);
     public Employee getEmployeeById(Long id);
     public void updateEmployee(Employee employee);
+    public void updateEmployee(String name, String email, String designation, double salary, Long createdBy);
     public void deleteEmployee(Long id);
     public Employee createEmployee(String name, String email, String designation, double salary, Long id);
 }

@@ -69,6 +69,19 @@ public class EmsServiceImpl implements EmsService {
     }
 
     @Override
+    public void updateEmployee(String name, String email, String designation, double salary, Long createdBy){
+        Employee existingEmployee = emsRepository.findByEmail(email)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with email " + email + " not found"));
+
+        existingEmployee.setName(name);
+        existingEmployee.setDesignation(designation);
+        existingEmployee.setSalary(salary);
+        existingEmployee.setCreatedBy(createdBy);
+
+        emsRepository.save(existingEmployee);  
+    }
+
+    @Override
     public void deleteEmployee(Long id) {
         Employee existingEmployee = emsRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
