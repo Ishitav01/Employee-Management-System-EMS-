@@ -31,6 +31,7 @@ export default function LoginPage() {
         setValue("name", "");
         setValue("password", "");
         setValue("designation", "");
+        setValue("username","");
         setLogin(prevState => !prevState);
         reset();
     }
@@ -61,12 +62,12 @@ export default function LoginPage() {
 
         if(data.success){
             setResponseData(data?.data);
-            // setUserData(data?.data);
             localStorage.setItem("userData",JSON.stringify(data?.data));
             navigate("/dashboard");
             showSnackbar(`Hello ${watch("username") ?  watch("username") : "Anonymous"}, Welcome!`, "success");
         }
         else{
+            console.log(data);
             setResponseError(data?.data)
             showSnackbar(`Login failed : ${data?.data}`,"error");
         }
@@ -125,7 +126,7 @@ export default function LoginPage() {
                             })}
                             error={!!errors.designation}
                             helperText={errors.designation?.message}
-                            defaultValue={"user"}
+                            defaultValue={"ROLE_USER"}
                         >
                             {
                                 ROLES.map((temp) => (

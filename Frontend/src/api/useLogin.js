@@ -20,11 +20,11 @@ export const useLogin = () => {
             return {success : true,data : response?.data};
         }
         catch(error){
-            return {success : false , data : error.response?.data?.message || "Login failed"};
+            return {success : false , data : error.response?.data || "Login failed"};
         }
     }
 
-    const userRegister = async ({username,email,password,name,roles}) => {
+    const userRegister = async ({username,email,password,name,role}) => {
         try{
 
             const response = await axios.post("http://localhost:8080/auth/register",{
@@ -32,7 +32,7 @@ export const useLogin = () => {
                 password,
                 username,
                 name,
-                role : "ROLE_ADMIN"
+                role
             })
 
 
@@ -48,7 +48,7 @@ export const useLogin = () => {
 
         }
         catch(error){
-            return {success : false , data : error.response?.data?.message || "Login failed"};
+            return {success : false , data : error?.response?.data || "Login failed"};
         }
     }
 
