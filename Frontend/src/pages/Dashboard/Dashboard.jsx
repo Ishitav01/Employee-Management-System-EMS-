@@ -26,30 +26,35 @@ import '../../styles/Dashboard.css'
 import { initialEmployees } from "../../utils/initialEmployees";
 import NoEmployeeFound from "../../components/NoEmployeeFound";
 import { useLoginContext } from "../../context/UserContext";
+import { useEmployee } from "../../api/useEmployee";
 
-export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData, user }) {
+export default function Dashboard({ setEditOpen, setAddOpen, setEditEmployee, user, employees,handleDelete }) {
 
-  const [employees, setEmployees] = useState(initialEmployees);
   const [searchField, setSearchField] = useState("name");
   const [searchQuery, setSearchQuery] = useState("");
+  const [employeeList, setEmployeeList] = useState([]);
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
 
-  useEffect(() => {
-  }, [user])
   const filtered = useMemo(() => {
-    if (!debouncedSearchQuery) return employees;
-    return employees.filter((emp) =>
+    if (!debouncedSearchQuery) return employeeList;
+    return employeeList.filter((emp) =>
       String(emp[searchField]).toLowerCase().includes(debouncedSearchQuery.toLowerCase())
     );
-  }, [employees, searchField, debouncedSearchQuery]);
+  }, [employeeList, searchField, debouncedSearchQuery]);
 
-  const visibleRows = useMemo(() => {
-    const start = page * rowsPerPage;
-    return filtered.slice(start, start + rowsPerPage);
-  }, [filtered, page, rowsPerPage]);
+  useEffect(() => {
+    setEmployeeList(Array.isArray(employees) ? employees : []);
+  }, [employees]);
+
+const visibleRows = useMemo(() => {
+  if (!Array.isArray(filtered)) return [];
+  const start = page * rowsPerPage;
+  return filtered.slice(start, start + rowsPerPage);
+}, [filtered, page, rowsPerPage]);
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -60,13 +65,14 @@ export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData, us
     setPage(0);
   };
   const handleEditClick = (emp) => {
-    setEmployeeData(emp);
+    setEditEmployee(emp);
     setEditOpen(true);
   };
   const handleAddClick = () => {
-    setEmployeeData(null);   // no employee → add mode
-    setAddOpen(true);           // open popup
+    setEditEmployee(null);   
+    setAddOpen(true);        
   };
+
 
   return (
     <Paper className="paper-root" elevation={0}>
@@ -112,7 +118,7 @@ export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData, us
           </div>
           <div>
             {
-              employees.length > 0 ? <>
+              employeeList.length > 0 ? <>
                 <TableContainer component={Paper} className="table-container">
                   <Table stickyHeader aria-label="employee table">
                     <TableHead>
@@ -154,7 +160,7 @@ export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData, us
                                   size="small" variant="contained" className="btn-edit" onClick={() => handleEditClick(emp)}
                                 >Edit</Button>
                                 <Button
-                                  size="small" variant="contained" className="btn-delete">Delete</Button>
+                                  size="small" variant="contained" className="btn-delete" onClick={() => handleDelete(emp)}>Delete</Button>
                               </TableCell>
                             }
 

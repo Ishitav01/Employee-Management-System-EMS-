@@ -73,13 +73,13 @@ export default function LoginPage() {
     };
 
 
-    // useEffect(() => {
-    //     const userData = JSON.parse(localStorage.getItem("userData") || "null");
-    //     if (userData) {
-    //         navigate("/dashboard");
-    //         showSnackbar("You are already logged in!", "success");
-    //     }
-    // }, [])
+    useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem("userData") || "null");
+        if (userData) {
+            navigate("/dashboard");
+            showSnackbar("You are already logged in!", "success");
+        }
+    }, [])
 
     const {
         register,
@@ -183,14 +183,14 @@ export default function LoginPage() {
                     helperText={errors.name?.message} />
                 <TextField className='text-fields' id="outlined-basic-2" label="Password" variant="outlined" type='password' {...register("password", {
                     required: "Password is required",
-                    minLength: {
-                        value: 6,
-                        message: "Password must be at least 6 characters",
-                    },
-                    pattern: {
-                        value: /^(?=.*[A-Z])(?=.*\d).+$/,
-                        message: "Must contain 1 uppercase letter & 1 number",
-                    },
+                    // minLength: {
+                    //     value: 6,
+                    //     message: "Password must be at least 6 characters",
+                    // },
+                    // pattern: {
+                    //     value: /^(?=.*[A-Z])(?=.*\d).+$/,
+                    //     message: "Must contain 1 uppercase letter & 1 number",
+                    // },
                 })}
                     error={!!errors.password}
                     helperText={errors.password?.message} />

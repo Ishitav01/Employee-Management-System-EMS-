@@ -15,13 +15,13 @@ export default function ProfileCard({ name, email, designation, salary }) {
     const navigate = useNavigate();
     const {showSnackbar} = useSnackbar();
 
-  // useEffect(() => {
-  //     const userData = JSON.parse(localStorage.getItem("userData") || "null");
-  //   if (!userData) {
-  //     navigate("/");
-  //     showSnackbar("You are not logged in!", "error");
-  //   }
-  // }, [])
+  useEffect(() => {
+      const userData = JSON.parse(localStorage.getItem("userData") || "null");
+    if (!userData) {
+      navigate("/");
+      showSnackbar("You are not logged in!", "error");
+    }
+  }, [])
 
   return (
     <div className="profile-page">
