@@ -36,20 +36,19 @@ public class AuthController {
     private EmsService emsService;
 
     @PostMapping("/create-ceo")
-    public ResponseEntity<?> createCEO(){
+    public ResponseEntity<?> createCEO() {
         Map<String, String> resp = new HashMap<>();
         resp.put("username", "ceo_user");
         resp.put("password", "ceo123");
 
-
-        //Ensures only one CEO can be created in db
-        if(userService.existsByUsername("ceo_user")){
+        // Ensures only one CEO can be created in db
+        if (userService.existsByUsername("ceo_user")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("CEO user already exists. "+resp.toString());
+                    .body("CEO user already exists. " + resp.toString());
         }
 
         userService.createCEO();
-        emsService.createCEO(); 
+        emsService.createCEO();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resp);
     }
@@ -58,7 +57,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));        
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
             AppUser user = userService.getByUsername(request.getUsername());
 
@@ -78,11 +77,9 @@ public class AuthController {
             resp.put("refreshToken", refreshToken);
 
             return ResponseEntity.ok(resp);
-        } 
-        catch (BadCredentialsException ex) {
+        } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Something went wrong : " + ex.getMessage());
         }
@@ -91,25 +88,20 @@ public class AuthController {
     // Register -> create a USER and return same shape with tokens.
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
-        try{
-            if (userService.existsByUsername(req.getUsername())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username " + req.getUsername() + " already exists");
-            }
-            else if (userService.existsByEmail(req.getEmail())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email " + req.getEmail() + " already exists");
-            }
-            else if(req.getRole().equals("ROLE_CEO") || req.getRole().equals("CEO")) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot register as CEO");
+        try {
+
+            ResponseEntity<?> canBeRegisteredResponse = canBeRegistered(req);
+            if (canBeRegisteredResponse != null) {
+                return canBeRegisteredResponse;
             }
 
             // Create user and save in app_user table
-            AppUser user = userService.createUser(req.getName(), req.getUsername(), req.getPassword(), req.getEmail(), req.getRole());
-            
-            //Create employee and save in employee table
+            AppUser user = userService.createUser(req.getName(), req.getUsername(), req.getPassword(),
+                    req.getEmail(), req.getRole());
+
+            // Create employee and save in employee table
             Employee employee = emsService.createEmployee(
-                    req.getName(), req.getEmail(), req.getDesignation(), req.getSalary(), user.getId()
-            );
-            
+                    req.getName(), req.getEmail(), req.getDesignation(), req.getSalary(), user.getId());
 
             String accessToken = jwtUtil.generateAccessToken(user.getUsername());
             String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
@@ -134,6 +126,23 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Something went wrong : " + ex.getMessage());
         }
+    }
+
+    public ResponseEntity<?> canBeRegistered(RegisterRequest req) {
+        if (userService.existsByUsername(req.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Username, " + req.getUsername() + " already exists");
+        } 
+        else if (userService.existsByEmail(req.getEmail()) || emsService.existsByEmail(req.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Email, " + req.getEmail() + " already exists");
+        } 
+        else if (req.getRole().equals("ROLE_CEO") || req.getRole().equals("CEO")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Cannot register as CEO");
+        }
+
+        return null;
     }
 
     // DTOs

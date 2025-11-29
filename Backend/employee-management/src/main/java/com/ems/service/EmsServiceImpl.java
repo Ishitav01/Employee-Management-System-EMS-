@@ -56,6 +56,11 @@ public class EmsServiceImpl implements EmsService {
     }
 
     @Override
+    public Boolean existsByEmail(String email) {
+        return emsRepository.findByEmail(email).isPresent();
+    }
+
+    @Override
     public void updateEmployee(Employee employee) {
         Employee existingEmployee = emsRepository.findById(employee.getId())
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + employee.getId() + " not found"));
