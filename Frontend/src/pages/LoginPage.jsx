@@ -39,6 +39,7 @@ export default function LoginPage() {
     const handleLogin = async (data) => {
 
         var data;
+        console.log("comes here")
 
         if (login) {
             const jsonData = {
@@ -49,12 +50,15 @@ export default function LoginPage() {
             data = await userLogin(jsonData);
         }
         else {
+            console.log("Register here..")
             const jsonData = {
                 username: watch("username"),
                 email: watch("email"),
                 password: watch("password"),
                 name: watch("name"),
-                role: watch("roles")
+                role: watch("roles"),
+                salary : watch("salary"),
+                designation : watch("designation")
             }
 
             data = await userRegister(jsonData);
@@ -179,8 +183,8 @@ export default function LoginPage() {
                             message: "Username should be at least 3 characters",
                         },
                     })}
-                    error={!!errors.name}
-                    helperText={errors.name?.message} />
+                    error={!!errors.username}
+                    helperText={errors.username?.message} />
                 <TextField className='text-fields' id="outlined-basic-2" label="Password" variant="outlined" type='password' {...register("password", {
                     required: "Password is required",
                     // minLength: {
@@ -198,7 +202,7 @@ export default function LoginPage() {
                     login ? <Typography color={"primary"} sx={{ cursor: "pointer" }} onClick={handleLoginChange} variant="caption">Not a member? Sign up now!</Typography> : <Typography sx={{ cursor: "pointer" }} variant="caption" color={"primary"} onClick={handleLoginChange}>Already a member? Sign in</Typography>
                 }
                 {
-                    login ? <Button className='login-button' onClick={handleSubmit(handleLogin)} variant="contained">Sign in</Button> : <Button className='login-button' variant="contained" onClick={handleSubmit(handleLogin)}>Register</Button>
+                    login ? <Button className='login-button' onClick={handleSubmit(handleLogin)} variant="contained">Sign in</Button> : <Button className='login-button' variant="contained" onClick={ handleSubmit(handleLogin)}>Register</Button>
                 }
             </div>
         </div>
