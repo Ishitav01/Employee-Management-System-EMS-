@@ -115,10 +115,12 @@ public class AdminController {
 
     // Employee DTO
     @Data
-    class EmployeeRequest {
+    static class EmployeeRequest {
         private String name;
         private String email;
         private String designation;
         private double salary;
+
+        public EmployeeRequest() {}
     }
 }
