@@ -28,7 +28,7 @@ import NoEmployeeFound from "../../components/NoEmployeeFound";
 import { useLoginContext } from "../../context/UserContext";
 import { useEmployee } from "../../api/useEmployee";
 
-export default function Dashboard({ setEditOpen, setAddOpen, setEditEmployee, user, employees,handleDelete }) {
+export default function Dashboard({ setEditOpen, setAddOpen, setEditEmployee, employees,handleDelete }) {
 
   const [searchField, setSearchField] = useState("name");
   const [searchQuery, setSearchQuery] = useState("");
@@ -76,7 +76,7 @@ const visibleRows = useMemo(() => {
 
   return (
     <Paper className="paper-root" elevation={0}>
-      <Outlet />
+      {/* <Outlet /> */}
       <div className="ems-root">
         <div className="ems-container">
           <div className="toolbar">
@@ -84,7 +84,7 @@ const visibleRows = useMemo(() => {
               <InputLabel id="filter-label">Filter by</InputLabel>
               <Select
                 labelId="filter-label"
-                value={searchField}
+                value={searchField}z
                 label="Filter by"
                 onChange={(e) => setSearchField(e.target.value)}
               >
@@ -103,9 +103,6 @@ const visibleRows = useMemo(() => {
               fullWidth
             />
 
-            {
-              user?.role === "ROLE_ADMIN" &&
-
               <Button
                 variant="contained"
                 className="btn-add"
@@ -114,7 +111,6 @@ const visibleRows = useMemo(() => {
               >
                 Add Employee
               </Button>
-            }
           </div>
           <div>
             {
@@ -128,10 +124,7 @@ const visibleRows = useMemo(() => {
                         <TableCell><Typography fontWeight={700}>EMAIL</Typography></TableCell>
                         <TableCell><Typography fontWeight={700}>DESIGNATION</Typography></TableCell>
                         <TableCell><Typography fontWeight={700}>SALARY</Typography></TableCell>
-                        {
-                          user?.role === "ROLE_ADMIN" && <TableCell><Typography fontWeight={700}>ACTIONS</Typography></TableCell>
-
-                        }
+                        <TableCell><Typography fontWeight={700}>ACTIONS</Typography></TableCell>
                       </TableRow>
                     </TableHead>
 
@@ -148,8 +141,6 @@ const visibleRows = useMemo(() => {
                             <TableCell>{emp.email}</TableCell>
                             <TableCell>{emp.designation}</TableCell>
                             <TableCell>{emp.salary.toLocaleString()}</TableCell>
-                            {
-                              user?.role === "ROLE_ADMIN" &&
                               <TableCell sx={{
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -162,7 +153,7 @@ const visibleRows = useMemo(() => {
                                 <Button
                                   size="small" variant="contained" className="btn-delete" onClick={() => handleDelete(emp)}>Delete</Button>
                               </TableCell>
-                            }
+                            
 
                           </TableRow>
                         ))
