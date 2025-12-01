@@ -30,13 +30,13 @@ public class UserServiceImpl implements UserService {
 
         // ensure role starts with ROLE_
         String role = user.getRole();
-        if (!role.startsWith("ROLE_")) role = "ROLE_" + role;
+        if (!role.startsWith("ROLE_"))
+            role = "ROLE_" + role;
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority(role))
-        );
+                Collections.singletonList(new SimpleGrantedAuthority(role)));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean existsByUsername(String username) {
         return userRepo.findByUsername(username).isPresent();
-    } 
+    }
 
     @Override
     public Boolean existsByEmail(String email) {
@@ -58,8 +58,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(AppUser user) {
         Optional.ofNullable(user).map(u -> u)
-            .orElseThrow(() -> new RuntimeException("User object is null"));
-        userRepo.save(user);   
+                .orElseThrow(() -> new RuntimeException("User object is null"));
+        userRepo.save(user);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(String name, String username, String rawPassword, String email) {
         AppUser existingUser = userRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with " + username + " not found"));
-        
+
         existingUser.setName(name);
         existingUser.setEmail(email);
         existingUser.setPassword(encoder.encode(rawPassword));
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
         AppUser user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        userRepo.delete(user);   
+        userRepo.delete(user);
     }
 
     // create admin (CEO will call controller to create admin)
@@ -125,12 +125,17 @@ public class UserServiceImpl implements UserService {
 
     // other helper methods like findAllUsers() for CEO view
     @Override
-    public List<AppUser> findAllUsers() { 
-        return userRepo.findAll(); 
+    public List<AppUser> findAllUsers() {
+        return userRepo.findAll();
     }
 
     @Override
-    public void createCEO(){
+    public List<AppUser> findAllAdmins() {
+        return userRepo.findByRole("ROLE_ADMIN");
+    }
+
+    @Override
+    public void createCEO() {
         AppUser user = new AppUser();
         user.setId(100L);
         user.setName("Anand Birje");
