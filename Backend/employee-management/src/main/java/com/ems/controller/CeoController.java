@@ -88,15 +88,15 @@ public class CeoController {
 
             if (!("ROLE_ADMIN".equals(user.getRole()))) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("User is not an ADMIN");
+                        .body("User is not an ADMIN");
             }
 
             userService.updateUser(req.getName(), req.getUsername(), req.getPassword(), req.getEmail());
             return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Admin details updated successfully.");
+                    .body("Admin details updated successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Unexpected Error occured: "+ e.getMessage());
+                    .body("Unexpected Error occured: " + e.getMessage());
         }
     }
 
@@ -108,6 +108,12 @@ public class CeoController {
     @GetMapping("/all-employees")
     public ResponseEntity<?> getAllEmployees() {
         return ResponseEntity.ok(emsService.getAllEmployees());
+    }
+
+    @GetMapping("/all-admins")
+    public ResponseEntity<?> getAllAdmins() {
+        List<AppUser> admins = userService.findAllAdmins();
+        return ResponseEntity.ok(admins);
     }
 
     @Data
