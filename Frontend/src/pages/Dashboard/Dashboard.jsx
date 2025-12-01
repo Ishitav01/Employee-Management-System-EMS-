@@ -76,7 +76,7 @@ const visibleRows = useMemo(() => {
 
   return (
     <Paper className="paper-root" elevation={0}>
-      <Outlet />
+      {/* <Outlet /> */}
       <div className="ems-root">
         <div className="ems-container">
           <div className="toolbar">
@@ -84,7 +84,7 @@ const visibleRows = useMemo(() => {
               <InputLabel id="filter-label">Filter by</InputLabel>
               <Select
                 labelId="filter-label"
-                value={searchField}
+                value={searchField}z
                 label="Filter by"
                 onChange={(e) => setSearchField(e.target.value)}
               >

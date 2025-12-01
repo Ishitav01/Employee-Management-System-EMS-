@@ -1,12 +1,32 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import useDebounce from '../hooks/useDebounce';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Button,
+    TextField,
+    Select,
+    MenuItem,
+    InputLabel,
+    FormControl,
+    TablePagination,
+    Typography
+  } from "@mui/material";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
-export default function AdminTable() {
+export default function AdminTable({adminList,handleDelete,setEditOpen,setAddOpen,setEditAdmin}) {
     const [admins, setAdmins] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const debouncedSearch = useDebounce(searchQuery, 500);
     const [popupOpen, setPopupOpen] = useState(false);
     const [popupMode, setPopupMode] = useState("create"); // create/edit
     const [selectedAdmin, setSelectedAdmin] = useState(null);
+    
     // --------------------------------------------------
     // Load Admins
     // --------------------------------------------------
@@ -19,9 +39,6 @@ export default function AdminTable() {
     ];
     setAdmins(dummyAdmins);
   }, []);
-    useEffect(() => {
-      loadAdmins();
-    }, []);
     // --------------------------------------------------
     // Search Filter
     // --------------------------------------------------
@@ -37,46 +54,24 @@ export default function AdminTable() {
     // Edit Admin
     // --------------------------------------------------
     const handleEdit = (admin) => {
-      setSelectedAdmin(admin);
-      setPopupMode("edit");
-      setPopupOpen(true);
+      setEditAdmin(admin)
+      setEditOpen(true);
     };
     // --------------------------------------------------
     // Add Admin
     // --------------------------------------------------
     const handleAdd = () => {
-      setPopupMode("create");
-      setSelectedAdmin(null);
-      setPopupOpen(true);
+      setEditAdmin(null);
+      setAddOpen(true);
     };
-    // --------------------------------------------------
-    // Delete Admin
-    // --------------------------------------------------
-    const handleDelete = async (admin) => {
-      if (!window.confirm("Do you want to delete this admin?")) return;
-      try {
-        await fetch(`http://localhost:8080/admin/${admin.id}`, {
-          method: "DELETE"
-        });
-        loadAdmins();
-      } catch (err) {
-        console.error("Delete failed:", err);
-      }
-    };
-    
+
     return (
       <>
-        {/* Popup */}
-        <CreateOrEditAdminPopup
-          open={popupOpen}
-          onClose={() => {
-            setPopupOpen(false);
-            loadAdmins();
-          }}
-          mode={popupMode}
-          data={selectedAdmin}
-        />
-        <div style={{ marginTop: "40px" }}>
+       
+    <Paper className="paper-root" elevation={0}>
+    <div className="ems-root">
+        <div className="ems-container">
+    <div className="toolbar">
           <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
             Admin Management
           </Typography>
@@ -98,6 +93,7 @@ export default function AdminTable() {
           >
             Add Admin
           </Button>
+          </div>
           {/* Admin Table */}
           <TableContainer component={Paper} className="table-container">
             <Table stickyHeader aria-label="admin table">
@@ -147,7 +143,9 @@ export default function AdminTable() {
               </TableBody>
             </Table>
           </TableContainer>
-        </div>
+</div>
+</div>
+        </Paper>
       </>
     );
   }

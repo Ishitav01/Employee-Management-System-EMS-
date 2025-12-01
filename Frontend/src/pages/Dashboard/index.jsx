@@ -8,6 +8,7 @@ import { useEmployee } from "../../api/useEmployee";
 import AdminTable from "../../components/AdminTable";
 import CreateOrEditAdminPopup from "../../components/CreateOrEditAdminPopup";
 import ProfileCard from "../ProfileCard";
+import useAdmin from "../../api/useAdmin";
 
 
 const DashboardPage = () => {
@@ -29,6 +30,7 @@ const DashboardPage = () => {
 
     const {showSnackbar} = useSnackbar();
     const { getAllEmployeesAdmin,deleteEmployee } = useEmployee();
+    const { getAllAdmins,removeAdmin } = useAdmin();
 
     useEffect(() => {
       const userData = JSON.parse(localStorage.getItem("userData") || "null");
@@ -38,7 +40,13 @@ const DashboardPage = () => {
         showSnackbar("You are not logged in!","error");
       }
       setUser(userData);
-      fetchEmployeeData(); 
+      if(userData.role !== "ROLE_USER"){
+        fetchEmployeeData(); 
+      }
+
+      if(userData.role === "ROLE_CEO"){
+        fetchAdminData();
+      }
     },[addOpen,editOpen])
 
     const fetchEmployeeData = async () => {
@@ -46,12 +54,26 @@ const DashboardPage = () => {
         setEmployeeData([...employees]);
     }
 
+    const fetchAdminData = async () => {
+      const admins = await getAllAdmins();
+      setAdminData([...admins]);
+    }
+
     const handleDelete = async (emp) => {
     await deleteEmployee(emp.id)
     setEmployeeData(prev => prev.filter((temp) => temp.id !== emp.id));
   }
 
-    return (
+  const handleAdminDelete = async (emp) => {
+    await removeAdmin(emp.username);
+    setAdminData(prevState => prevState.filter((temp) => emp.username !== temp.username ));
+  }
+
+  useEffect(() => {
+    console.log(editAdmin);
+
+  },[editAdmin])
+  return (
         <>
         {
         (user?.role === "ROLE_CEO" || user?.role === "ROLE_ADMIN") && (
@@ -81,7 +103,13 @@ const DashboardPage = () => {
                             )}
 
           { user?.role === "ROLE_CEO" &&  
-                         ( <AdminTable /> )
+                         ( <AdminTable 
+                         adminList={adminData}
+                         handleDelete={handleAdminDelete}
+                         setEditOpen={setEditAdminOpen}
+                         setAddOpen={setAddAdminOpen}
+                         setEditAdmin={setEditAdmin}
+                         /> )
                             }
           {
             user?.role === "ROLE_CEO" && editAdminOpen && (
