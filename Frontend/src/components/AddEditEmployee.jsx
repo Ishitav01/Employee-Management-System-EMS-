@@ -42,7 +42,6 @@ export default function AddEditEmployee({ open, handleClose, data }) {
         salary: "",
       });
     }
-    console.log(data?.designation);
     
   }, [isEdit, data, reset]);
 

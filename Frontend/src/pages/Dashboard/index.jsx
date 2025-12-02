@@ -34,7 +34,6 @@ const DashboardPage = () => {
 
     useEffect(() => {
       const userData = JSON.parse(localStorage.getItem("userData") || "null");
-      console.log(userData);
       if(!userData){
         navigate("/");
         showSnackbar("You are not logged in!","error");
@@ -58,7 +57,6 @@ const DashboardPage = () => {
 
     const fetchEmployeeData = async () => {
         const employees = await getAllEmployeesAdmin();
-        console.log("Employees : ",employees);
         setEmployeeData([...employees]);
     }
 
@@ -72,16 +70,9 @@ const DashboardPage = () => {
     await fetchAdminData();
      }
 
-  useEffect(() => {
-    console.log("here it is" ,adminData);
-
-  },[adminData])
-
   const fetchAdminData = async () => {
         const adminData = await getAllAdmins();
-        console.log("Admins dashboard.. : ",adminData?.data)
         if(adminData?.success){
-          console.log("After success:,",adminData);
           setAdminData([...adminData?.data]);
         }
       }

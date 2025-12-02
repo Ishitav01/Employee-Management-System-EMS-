@@ -23,7 +23,6 @@ export default function ProfileCard({ name, email, designation, salary }) {
       navigate("/");
       showSnackbar("You are not logged in!", "error");
     }
-    console.log("User data")
     setUser(userData);
   }, [])
 

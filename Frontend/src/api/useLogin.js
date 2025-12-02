@@ -13,7 +13,6 @@ export const useLogin = () => {
             const accessToken = response.data?.accessToken;
             const refreshToken = response.data?.refreshToken;
 
-            console.log(response);
             if(accessToken){
                 localStorage.setItem("accessToken",accessToken);
                 localStorage.setItem("refreshToken",refreshToken);
@@ -35,7 +34,6 @@ export const useLogin = () => {
             const accessToken = response.data?.accessToken;
             const refreshToken = response.data?.refreshToken;
 
-            console.log(response);
             if(accessToken){
                 localStorage.setItem("accessToken",accessToken);
                 localStorage.setItem("refreshToken",refreshToken);

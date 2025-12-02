@@ -39,7 +39,6 @@ export default function LoginPage() {
     const handleLogin = async (data) => {
 
         var data;
-        console.log("comes here")
 
         if (login) {
             const jsonData = {
@@ -50,7 +49,6 @@ export default function LoginPage() {
             data = await userLogin(jsonData);
         }
         else {
-            console.log("Register here..")
             const jsonData = {
                 username: watch("username"),
                 email: watch("email"),

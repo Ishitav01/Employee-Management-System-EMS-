@@ -28,7 +28,6 @@ export default function AdminTable({adminData,handleDelete,setEditOpen,setAddOpe
 
     
 useEffect(() => {
-  console.log("Inside admin table:", adminData);
   setAdmins(adminData || []);
 }, [adminData]);
 

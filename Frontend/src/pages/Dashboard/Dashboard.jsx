@@ -39,11 +39,19 @@ export default function Dashboard({ setEditOpen, setAddOpen, setEditEmployee, em
   const [rowsPerPage, setRowsPerPage] = useState(15);
 
   const filtered = useMemo(() => {
-    if (!debouncedSearchQuery) return employeeList;
-    return employeeList.filter((emp) =>
-      String(emp[searchField]).toLowerCase().includes(debouncedSearchQuery.toLowerCase())
+  if (!debouncedSearchQuery) return employeeList;
+
+  return employeeList.filter((emp) => {
+    const value = emp[searchField];
+
+    if (value === null || value === undefined) return false;
+
+    return String(value).toLowerCase().includes(
+      debouncedSearchQuery.toLowerCase()
     );
-  }, [employeeList, searchField, debouncedSearchQuery]);
+  });
+}, [employeeList, searchField, debouncedSearchQuery]);
+
 
   useEffect(() => {
     setEmployeeList(Array.isArray(employees) ? employees : []);
@@ -69,7 +77,6 @@ const visibleRows = useMemo(() => {
     setEditOpen(true);
   };
   const handleAddClick = () => {
-    console.log("Handle add : ");
     setEditEmployee(null);   
     setAddOpen(true);        
   };
@@ -85,7 +92,7 @@ const visibleRows = useMemo(() => {
               <InputLabel id="filter-label">Filter by</InputLabel>
               <Select
                 labelId="filter-label"
-                value={searchField}z
+                value={searchField}
                 label="Filter by"
                 onChange={(e) => setSearchField(e.target.value)}
               >

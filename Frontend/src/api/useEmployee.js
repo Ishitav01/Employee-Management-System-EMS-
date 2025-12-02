@@ -31,7 +31,6 @@ export const useEmployee = () => {
 
     return { success: true, data: response.data||"Employee added" };
   } catch (error) {
-    console.log(error);
     return {
       success: false,
       data: error.response?.data || "Error adding the employee"
@@ -42,8 +41,7 @@ export const useEmployee = () => {
 
     const editEmployee = async (updatedData) => {
     try {
-      
-      console.log("Updating employee in hook:", updatedData);
+
     const response = await apiInterceptor.put(
       `${BASE_URL}/api/admin/employees`,
       {
