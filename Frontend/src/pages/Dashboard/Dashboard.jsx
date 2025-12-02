@@ -25,28 +25,44 @@ import { Outlet } from "react-router-dom";
 import '../../styles/Dashboard.css'
 import { initialEmployees } from "../../utils/initialEmployees";
 import NoEmployeeFound from "../../components/NoEmployeeFound";
+import { useLoginContext } from "../../context/UserContext";
+import { useEmployee } from "../../api/useEmployee";
 
-export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData }) {
+export default function Dashboard({ setEditOpen, setAddOpen, setEditEmployee, employees,handleDelete }) {
 
-  const [employees, setEmployees] = useState(initialEmployees);
   const [searchField, setSearchField] = useState("name");
   const [searchQuery, setSearchQuery] = useState("");
+  const [employeeList, setEmployeeList] = useState([]);
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
 
   const filtered = useMemo(() => {
-    if (!debouncedSearchQuery) return employees;
-    return employees.filter((emp) =>
-      String(emp[searchField]).toLowerCase().includes(debouncedSearchQuery.toLowerCase())
-    );
-  }, [employees, searchField, debouncedSearchQuery]);
+  if (!debouncedSearchQuery) return employeeList;
 
-  const visibleRows = useMemo(() => {
-    const start = page * rowsPerPage;
-    return filtered.slice(start, start + rowsPerPage);
-  }, [filtered, page, rowsPerPage]);
+  return employeeList.filter((emp) => {
+    const value = emp[searchField];
+
+    if (value === null || value === undefined) return false;
+
+    return String(value).toLowerCase().includes(
+      debouncedSearchQuery.toLowerCase()
+    );
+  });
+}, [employeeList, searchField, debouncedSearchQuery]);
+
+
+  useEffect(() => {
+    setEmployeeList(Array.isArray(employees) ? employees : []);
+  }, [employees]);
+
+const visibleRows = useMemo(() => {
+  if (!Array.isArray(filtered)) return [];
+  const start = page * rowsPerPage;
+  return filtered.slice(start, start + rowsPerPage);
+}, [filtered, page, rowsPerPage]);
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -57,19 +73,20 @@ export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData }) 
     setPage(0);
   };
   const handleEditClick = (emp) => {
-    setEmployeeData(emp);
+    setEditEmployee(emp);
     setEditOpen(true);
   };
   const handleAddClick = () => {
-    setEmployeeData(null);   // no employee → add mode
-    setAddOpen(true);           // open popup
+    setEditEmployee(null);   
+    setAddOpen(true);        
   };
+
 
   return (
     <Paper className="paper-root" elevation={0}>
-      <Outlet />
+      {/* <Outlet /> */}
       <div className="ems-root">
-        <div className="ems-container">
+        <div className="ems-container1">
           <div className="toolbar">
             <FormControl fullWidth>
               <InputLabel id="filter-label">Filter by</InputLabel>
@@ -93,18 +110,19 @@ export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData }) 
               onChange={(e) => setSearchQuery(e.target.value)}
               fullWidth
             />
-            <Button
-              variant="contained"
-              className="btn-add"
-              onClick={handleAddClick}
-              startIcon={<PersonAddIcon />}
-            >
-              Add Employee
-            </Button>
+
+              <Button
+                variant="contained"
+                className="btn-add"
+                onClick={handleAddClick}
+                startIcon={<PersonAddIcon />}
+              >
+                Add Employee
+              </Button>
           </div>
           <div>
             {
-              employees.length > 0 ? <>
+              employeeList.length > 0 ? <>
                 <TableContainer component={Paper} className="table-container">
                   <Table stickyHeader aria-label="employee table">
                     <TableHead>
@@ -130,19 +148,21 @@ export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData }) 
                             <TableCell>{emp.name}</TableCell>
                             <TableCell>{emp.email}</TableCell>
                             <TableCell>{emp.designation}</TableCell>
-                            <TableCell>{(emp?.salary ?? '—').toLocaleString?.('en-US') ?? '—'}</TableCell>
-                            <TableCell sx={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              gap: '20px',
-                              alignItems: 'center'
-                            }}>
-                              <Button
-                                size="small" variant="contained" className="btn-edit" onClick={() => handleEditClick(emp)}
-                              >Edit</Button>
-                              <Button
-                                size="small" variant="contained" className="btn-delete">Delete</Button>
-                            </TableCell>
+                            <TableCell>{emp?.salary ? Number(emp.salary).toLocaleString() : "N/A"}</TableCell>
+                              <TableCell sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '20px',
+                                alignItems: 'center'
+                              }}>
+                                <Button
+                                  size="small" variant="contained" className="btn-edit" onClick={() => handleEditClick(emp)}
+                                >Edit</Button>
+                                <Button
+                                  size="small" variant="contained" className="btn-delete" onClick={() => handleDelete(emp)}>Delete</Button>
+                              </TableCell>
+                            
+
                           </TableRow>
                         ))
                       )}
