@@ -1,12 +1,12 @@
 import apiInterceptor from "../api/apiInterceptor"; // adjust path if needed
 
 export const useAdmin = () => {
-  const base = "http://localhost:8080/api/ceo";
+  const base = import.meta.env.VITE_BASE_URL;
 
   const createAdmin = async ({username,email,name,password}) => {
     // adminReq: { name, username, password, email }
     try {
-      const response = await apiInterceptor.post(`${base}/create-admin`, {
+      const response = await apiInterceptor.post(`${base}/api/ceo/create-admin`, {
         name,
         email,
         password,
@@ -24,7 +24,7 @@ export const useAdmin = () => {
 
   const removeAdmin = async (username) => {
     try {
-      const response = await apiInterceptor.delete(`${base}/remove-admin`, {
+      const response = await apiInterceptor.delete(`${base}/api/ceo/remove-admin`, {
         params: { username },
       });
       // response.data is message
@@ -40,7 +40,7 @@ export const useAdmin = () => {
   const updateAdmin = async ({username,email,name,password}) => {
     // adminReq: { name, username, password, email }
     try {
-      const response = await apiInterceptor.put(`${base}/update-admin`,{
+      const response = await apiInterceptor.put(`${base}/api/ceo/update-admin`,{
         name,
         email,
         password,
@@ -57,7 +57,7 @@ export const useAdmin = () => {
 
   const getAllUsers = async () => {
     try {
-      const response = await apiInterceptor.get(`${base}/all-users`);
+      const response = await apiInterceptor.get(`${base}/api/ceo/all-users`);
       return { success: true, data: response.data };
     } catch (error) {
       return {
@@ -69,7 +69,7 @@ export const useAdmin = () => {
 
   const getAllEmployees = async () => {
     try {
-      const response = await apiInterceptor.get(`${base}/all-employees`);
+      const response = await apiInterceptor.get(`${base}/api/ceo/all-employees`);
       return { success: true, data: response.data };
     } catch (error) {
       return {
@@ -81,7 +81,7 @@ export const useAdmin = () => {
 
   const getAllAdmins = async () => {
   try {
-    const response = await apiInterceptor.get(`${base}/all-admins`);
+    const response = await apiInterceptor.get(`${base}/api/ceo/all-admins`);
     return { success: true, data: response.data };
   } catch (error) {
     return {

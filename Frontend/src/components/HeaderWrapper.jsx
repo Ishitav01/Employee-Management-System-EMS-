@@ -1,12 +1,10 @@
 import { Button, Typography } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useLoginContext } from '../context/UserContext';
 
 export default function HeaderWrapper({children}) {
 
   const navigate = useNavigate();
-  const {setUserData} = useLoginContext();
 
 
 
@@ -18,7 +16,7 @@ export default function HeaderWrapper({children}) {
   return (
     <>
     <header className="ems-header">
-        <Typography variant='h6'>Employee Management System</Typography>
+        <Typography variant='h6' className='heading'>Employee Management System</Typography>
         <Button variant="outlined" className="btn-logout" onClick={handleLogout}>Logout</Button>
       </header>
       {children}

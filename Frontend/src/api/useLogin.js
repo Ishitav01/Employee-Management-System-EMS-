@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const useLogin = () => {
-      const BASE_URL = "http://localhost:8080";
+      const BASE_URL = import.meta.env.VITE_BASE_URL;
 
     const userLogin = async ({username,password}) => {
         try{

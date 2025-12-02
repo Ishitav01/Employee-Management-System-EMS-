@@ -4,7 +4,7 @@ import apiInterceptor from './apiInterceptor';
 
 export const useEmployee = () => {
 
-  const BASE_URL = "http://localhost:8080";
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
     const getAllEmployeesCeo = async () => {
     try {
