@@ -21,7 +21,6 @@ public class EmsServiceImpl implements EmsService {
     @Autowired
     private UserRepository userRepository;
 
-
     @Override
     public Employee createEmployee(String name, String email, String designation, double salary, Long createdBy) {
         Employee employee = new Employee();
@@ -38,8 +37,8 @@ public class EmsServiceImpl implements EmsService {
     @Override
     public Employee addEmployee(Employee employee) {
         Optional.ofNullable(employee).map(emp -> emp)
-            .orElseThrow(() -> new EmployeeNotFoundException("Employee object is null"));
-        
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee object is null"));
+
         emsRepository.save(employee);
         return employee;
     }
@@ -63,7 +62,8 @@ public class EmsServiceImpl implements EmsService {
     @Override
     public void updateEmployee(Employee employee) {
         Employee existingEmployee = emsRepository.findById(employee.getId())
-                .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + employee.getId() + " not found"));
+                .orElseThrow(
+                        () -> new EmployeeNotFoundException("Employee with ID " + employee.getId() + " not found"));
 
         existingEmployee.setName(employee.getName());
         existingEmployee.setDesignation(employee.getDesignation());
@@ -74,7 +74,7 @@ public class EmsServiceImpl implements EmsService {
     }
 
     @Override
-    public void updateEmployee(String name, String email, String designation, double salary, Long createdBy){
+    public void updateEmployee(String name, String email, String designation, double salary, Long createdBy) {
         Employee existingEmployee = emsRepository.findByEmail(email)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee with email " + email + " not found"));
 
@@ -83,7 +83,7 @@ public class EmsServiceImpl implements EmsService {
         existingEmployee.setSalary(salary);
         existingEmployee.setCreatedBy(createdBy);
 
-        emsRepository.save(existingEmployee);  
+        emsRepository.save(existingEmployee);
     }
 
     @Override
@@ -94,13 +94,19 @@ public class EmsServiceImpl implements EmsService {
         emsRepository.delete(existingEmployee);
     }
 
-    //CreatedBy is Long
+    // CreatedBy is Long
     @Override
     public List<Employee> findAllByCreatedBy(Long userId) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with " + userId + " not found"));
-        
+
         return emsRepository.findAllByCreatedBy(userId);
+    }
+
+    @Override
+    public Employee getEmployeeByUserId(Long userId) {
+        return emsRepository.findByCreatedBy(userId)
+                .orElse(null);
     }
 
     @Override
@@ -109,11 +115,11 @@ public class EmsServiceImpl implements EmsService {
         emp.setId(100L);
         emp.setName("Anand Birje");
         emp.setEmail("ceo@example.com");
-        emp.setDesignation("Chief Executive Officer"); 
+        emp.setDesignation("Chief Executive Officer");
         emp.setSalary(2500000.00);
         emp.setCreatedBy(userRepository.findByUsername("ceo_user").get().getId());
 
         emsRepository.save(emp);
-        
+
     }
 }

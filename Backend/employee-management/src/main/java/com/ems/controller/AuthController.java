@@ -60,7 +60,7 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
             AppUser user = userService.getByUsername(request.getUsername());
-
+            Employee emp = emsService.getEmployeeByUserId(user.getId()); // Employee table fetch
             String accessToken = jwtUtil.generateAccessToken(user.getUsername());
             String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
 
@@ -71,6 +71,17 @@ public class AuthController {
             resp.put("username", user.getUsername());
             resp.put("email", user.getEmail());
             resp.put("role", user.getRole());
+
+            // additional employee information
+            if (emp != null) {
+                resp.put("name", emp.getName());
+                resp.put("designation", emp.getDesignation());
+                resp.put("salary", emp.getSalary());
+            } else {
+                resp.put("name", user.getName()); // CEO or Admin (no employee record)
+                resp.put("designation", "N/A");
+                resp.put("salary", "N/A");
+            }
 
             // Returning tokens
             resp.put("accessToken", accessToken);
@@ -132,12 +143,10 @@ public class AuthController {
         if (userService.existsByUsername(req.getUsername())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Username, " + req.getUsername() + " already exists");
-        } 
-        else if (userService.existsByEmail(req.getEmail()) || emsService.existsByEmail(req.getEmail())) {
+        } else if (userService.existsByEmail(req.getEmail()) || emsService.existsByEmail(req.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Email, " + req.getEmail() + " already exists");
-        } 
-        else if (req.getRole().equals("ROLE_CEO") || req.getRole().equals("CEO")) {
+        } else if (req.getRole().equals("ROLE_CEO") || req.getRole().equals("CEO")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Cannot register as CEO");
         }
