@@ -1,11 +1,14 @@
+
 import axios from 'axios';
 import apiInterceptor from './apiInterceptor';
 
 export const useEmployee = () => {
 
+  const BASE_URL = "http://localhost:8080";
+
     const getAllEmployeesCeo = async () => {
     try {
-      const response = await apiInterceptor.get("http://13.210.35.0:8080/api/ceo/all-employees");
+      const response = await apiInterceptor.get(`${BASE_URL}/api/ceo/all-employees`);
       return response.data; // return employee list
     } catch (error) {
       return {success : false , data : error.response?.data || "Error fetching employees"};
@@ -13,7 +16,7 @@ export const useEmployee = () => {
   }
   const getAllEmployeesAdmin = async () => {
     try {
-      const response = await apiInterceptor.get("http://13.210.35.0:8080/api/admin/employees");
+      const response = await apiInterceptor.get(`${BASE_URL}/api/admin/employees`);
       return response.data; // return employee list
     } catch (error) {
       return {success : false , data : error.response?.data || "Error fetching employees"};
@@ -23,7 +26,7 @@ export const useEmployee = () => {
     const addEmployee = async (emp) => {
   try {
     const response = await apiInterceptor.post(
-      "http://13.210.35.0:8080/api/admin/employees",emp
+      `${BASE_URL}/api/admin/employees`,emp
     );
 
     return { success: true, data: response.data||"Employee added" };
@@ -42,7 +45,7 @@ export const useEmployee = () => {
       
       console.log("Updating employee in hook:", updatedData);
     const response = await apiInterceptor.put(
-      "http://13.210.35.0:8080/api/admin/employees",
+      `${BASE_URL}/api/admin/employees`,
       {
         ...updatedData  
       }
@@ -56,7 +59,7 @@ export const useEmployee = () => {
   }}
     const deleteEmployee = async (id) => {
         try{
-            const response = apiInterceptor.delete("http://13.210.35.0:8080/api/admin/employees",{
+            const response = apiInterceptor.delete(`${BASE_URL}/api/admin/employees`,{
                 params : {
                   id
                 }

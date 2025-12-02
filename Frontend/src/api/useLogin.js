@@ -1,10 +1,11 @@
 import axios from 'axios';
-import apiInterceptor from './apiInterceptor';
 
 export const useLogin = () => {
+      const BASE_URL = "http://localhost:8080";
+
     const userLogin = async ({username,password}) => {
         try{
-            const response = await axios.post("http://13.210.35.0:8080/auth/login",{
+            const response = await axios.post(`${BASE_URL}/auth/login`,{
                 username,
                 password
             });
@@ -28,7 +29,7 @@ export const useLogin = () => {
     const userRegister = async (empData) => {
         try{
 
-            const response = await axios.post("http://13.210.35.0:8080/auth/register",empData)
+            const response = await axios.post(`${BASE_URL}/auth/register`,empData)
 
 
             const accessToken = response.data?.accessToken;

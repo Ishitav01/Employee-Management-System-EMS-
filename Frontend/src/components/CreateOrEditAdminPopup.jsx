@@ -42,27 +42,6 @@ export default function CreateOrEditAdminPopup({ open, onClose, data,setAdminDat
 
   const {createAdmin,updateAdmin}= useAdmin();
 
-  // const onSubmit = async (formData) => {
-  //   if (isEdit) {
-
-  //     await fetch(`http://localhost:8080/admin/${data.id}`, {
-  //       method: "PUT",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(formData),
-  //     });
-  //     alert("Admin updated successfully!");
-  //   } else {
-
-  //     await fetch(`http://localhost:8080/admin`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(formData),
-  //     });
-  //     alert("Admin created successfully!");
-  //   }
-  //   reset();
-  //   onClose();
-  // };
 
   const onSubmit = async (formData) => {
     if (isEdit) {

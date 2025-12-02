@@ -79,6 +79,10 @@ export default function LoginPage() {
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem("userData") || "null");
+        if(userData && userData?.role == "ROLE_USER"){
+            navigate("/user");
+            showSnackbar("You are already logged in!", "success"); 
+        }
         if (userData) {
             navigate("/dashboard");
             showSnackbar("You are already logged in!", "success");

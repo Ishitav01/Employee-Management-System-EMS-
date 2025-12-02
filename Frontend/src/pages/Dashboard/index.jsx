@@ -39,11 +39,22 @@ const DashboardPage = () => {
         navigate("/");
         showSnackbar("You are not logged in!","error");
       }
+
+      if(userData?.role === "ROLE_USER"){
+        navigate("/user");
+      }
       setUser(userData);
-      if(userData.role !== "ROLE_USER"){
+      if(userData.role === "ROLE_ADMIN"){
         fetchEmployeeData(); 
       }
+      if(userData.role == "ROLE_CEO"){
+        fetchAdminData();
+      }
     },[addOpen,editOpen])
+
+    useEffect(() => {
+      fetchAdminData();
+    },[editAdminOpen,addAdminOpen])
 
     const fetchEmployeeData = async () => {
         const employees = await getAllEmployeesAdmin();
@@ -58,12 +69,22 @@ const DashboardPage = () => {
 
   const handleAdminDelete = async (emp) => {
     await removeAdmin(emp.username);
+    await fetchAdminData();
      }
 
   useEffect(() => {
     console.log("here it is" ,adminData);
 
   },[adminData])
+
+  const fetchAdminData = async () => {
+        const adminData = await getAllAdmins();
+        console.log("Admins dashboard.. : ",adminData?.data)
+        if(adminData?.success){
+          console.log("After success:,",adminData);
+          setAdminData([...adminData?.data]);
+        }
+      }
   return (
         <>
         {
@@ -95,6 +116,7 @@ const DashboardPage = () => {
 
           { user?.role === "ROLE_CEO" &&  
                          ( <AdminTable 
+                          adminData={adminData}
                          handleDelete={handleAdminDelete}
                          setEditOpen={setEditAdminOpen}
                          setAddOpen={setAddAdminOpen}

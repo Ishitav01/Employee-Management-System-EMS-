@@ -20,27 +20,18 @@ import {
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useAdmin } from '../api/useAdmin';
 
-export default function AdminTable({handleDelete,setEditOpen,setAddOpen,setEditAdmin}) {
+export default function AdminTable({adminData,handleDelete,setEditOpen,setAddOpen,setEditAdmin}) {
     const [admins, setAdmins] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const debouncedSearch = useDebounce(searchQuery, 500);
-    const [popupOpen, setPopupOpen] = useState(false);
-    const [popupMode, setPopupMode] = useState("create"); // create/edit
-    const [selectedAdmin, setSelectedAdmin] = useState(null);
     
-    const {getAllAdmins } = useAdmin();
 
-    const fetchAdminData = async () => {
-      const adminData = await getAllAdmins();
-      console.log("Admins dashboard.. : ",adminData?.data)
-      if(adminData?.success){
-        setAdmins([...adminData?.data]);
-      }
-    }
+    
+useEffect(() => {
+  console.log("Inside admin table:", adminData);
+  setAdmins(adminData || []);
+}, [adminData]);
 
-   useEffect(() => {
-    fetchAdminData();
-  }, []);
 
 
     // --------------------------------------------------

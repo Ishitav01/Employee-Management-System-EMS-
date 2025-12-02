@@ -1,7 +1,7 @@
 import apiInterceptor from "../api/apiInterceptor"; // adjust path if needed
 
 export const useAdmin = () => {
-  const base = "http://13.210.35.0:8080/api/ceo";
+  const base = "http://localhost:8080/api/ceo";
 
   const createAdmin = async ({username,email,name,password}) => {
     // adminReq: { name, username, password, email }

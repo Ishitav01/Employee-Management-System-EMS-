@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/ProfileCard.css";
 import { useLoginContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,8 @@ export default function ProfileCard({ name, email, designation, salary }) {
   const initials =
     name?.split(" ").map((n) => n[0]).join("").toUpperCase() || "?";
 
+    const [user,setUser] = useState(null);
+
     const navigate = useNavigate();
     const {showSnackbar} = useSnackbar();
 
@@ -21,6 +23,8 @@ export default function ProfileCard({ name, email, designation, salary }) {
       navigate("/");
       showSnackbar("You are not logged in!", "error");
     }
+    
+    setUser(userData);
   }, [])
 
   return (
@@ -30,8 +34,8 @@ export default function ProfileCard({ name, email, designation, salary }) {
           <div className="profile-avatar">{initials}</div>
 
           <div className="profile-info">
-            <h2 className="profile-name">{name}</h2>
-            <p className="profile-email">{email}</p>
+            <h2 className="profile-name">{user?.name || "Anonymous"}</h2>
+            <p className="profile-email">{user?.email || "Anonymous@gmail.com"}</p>
           </div>
         </div>
 
@@ -39,12 +43,12 @@ export default function ProfileCard({ name, email, designation, salary }) {
 
         <div className="profile-detail">
           <span className="label">Designation</span>
-          <span className="value designation-tag">{designation}</span>
+          <span className="value designation-tag">{user?.designation || "Not known"}</span>
         </div>
 
         <div className="profile-detail">
           <span className="label">Salary</span>
-          <span className="value salary-text">₹ {salary}</span>
+          <span className="value salary-text">₹ {user?.salary || "0"}</span>
         </div>
       </div>
     </div>
