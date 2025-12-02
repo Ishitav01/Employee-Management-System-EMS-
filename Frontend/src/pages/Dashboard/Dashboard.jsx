@@ -69,6 +69,7 @@ const visibleRows = useMemo(() => {
     setEditOpen(true);
   };
   const handleAddClick = () => {
+    console.log("Handle add : ");
     setEditEmployee(null);   
     setAddOpen(true);        
   };
@@ -78,7 +79,7 @@ const visibleRows = useMemo(() => {
     <Paper className="paper-root" elevation={0}>
       {/* <Outlet /> */}
       <div className="ems-root">
-        <div className="ems-container">
+        <div className="ems-container1">
           <div className="toolbar">
             <FormControl fullWidth>
               <InputLabel id="filter-label">Filter by</InputLabel>

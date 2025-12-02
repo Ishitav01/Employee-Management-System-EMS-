@@ -18,8 +18,9 @@ import {
     Typography
   } from "@mui/material";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { useAdmin } from '../api/useAdmin';
 
-export default function AdminTable({adminList,handleDelete,setEditOpen,setAddOpen,setEditAdmin}) {
+export default function AdminTable({handleDelete,setEditOpen,setAddOpen,setEditAdmin}) {
     const [admins, setAdmins] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const debouncedSearch = useDebounce(searchQuery, 500);
@@ -27,18 +28,21 @@ export default function AdminTable({adminList,handleDelete,setEditOpen,setAddOpe
     const [popupMode, setPopupMode] = useState("create"); // create/edit
     const [selectedAdmin, setSelectedAdmin] = useState(null);
     
-    // --------------------------------------------------
-    // Load Admins
-    // --------------------------------------------------
-    useEffect(() => {
-    const dummyAdmins = [
-      { id: 1, username: "john_admin", name: "John Doe", email: "john@gmail.com" },
-      { id: 2, username: "emma_admin", name: "Emma Watson", email: "emma@gmail.com" },
-      { id: 3, username: "mike_admin", name: "Mike Walker", email: "mike@gmail.com" },
-      { id: 4, username: "rita_admin", name: "Rita Smith", email: "rita@gmail.com" }
-    ];
-    setAdmins(dummyAdmins);
+    const {getAllAdmins } = useAdmin();
+
+    const fetchAdminData = async () => {
+      const adminData = await getAllAdmins();
+      console.log("Admins dashboard.. : ",adminData?.data)
+      if(adminData?.success){
+        setAdmins([...adminData?.data]);
+      }
+    }
+
+   useEffect(() => {
+    fetchAdminData();
   }, []);
+
+
     // --------------------------------------------------
     // Search Filter
     // --------------------------------------------------
@@ -70,7 +74,7 @@ export default function AdminTable({adminList,handleDelete,setEditOpen,setAddOpe
        
     <Paper className="paper-root" elevation={0}>
     <div className="ems-root">
-        <div className="ems-container">
+        <div className="ems-container2">
     <div className="toolbar">
           <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
             Admin Management
@@ -107,7 +111,7 @@ export default function AdminTable({adminList,handleDelete,setEditOpen,setAddOpe
                 </TableRow>
               </TableHead>
               <TableBody>
-                {filteredAdmins.length === 0 ? (
+                {!filteredAdmins || filteredAdmins.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={5} align="center">
                       No admins found.

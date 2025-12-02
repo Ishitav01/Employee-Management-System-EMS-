@@ -8,7 +8,7 @@ import { useEmployee } from "../../api/useEmployee";
 import AdminTable from "../../components/AdminTable";
 import CreateOrEditAdminPopup from "../../components/CreateOrEditAdminPopup";
 import ProfileCard from "../ProfileCard";
-import useAdmin from "../../api/useAdmin";
+import {useAdmin} from "../../api/useAdmin";
 
 
 const DashboardPage = () => {
@@ -43,20 +43,12 @@ const DashboardPage = () => {
       if(userData.role !== "ROLE_USER"){
         fetchEmployeeData(); 
       }
-
-      if(userData.role === "ROLE_CEO"){
-        fetchAdminData();
-      }
     },[addOpen,editOpen])
 
     const fetchEmployeeData = async () => {
         const employees = await getAllEmployeesAdmin();
+        console.log("Employees : ",employees);
         setEmployeeData([...employees]);
-    }
-
-    const fetchAdminData = async () => {
-      const admins = await getAllAdmins();
-      setAdminData([...admins]);
     }
 
     const handleDelete = async (emp) => {
@@ -66,17 +58,16 @@ const DashboardPage = () => {
 
   const handleAdminDelete = async (emp) => {
     await removeAdmin(emp.username);
-    setAdminData(prevState => prevState.filter((temp) => emp.username !== temp.username ));
-  }
+     }
 
   useEffect(() => {
-    console.log(editAdmin);
+    console.log("here it is" ,adminData);
 
-  },[editAdmin])
+  },[adminData])
   return (
         <>
         {
-        (user?.role === "ROLE_CEO" || user?.role === "ROLE_ADMIN") && (
+        (user?.role === "ROLE_ADMIN") && (
         <Dashboard setEditOpen={setEditOpen} setAddOpen={setAddOpen} setEditEmployee={setEditEmployee} employees={employeeData} handleDelete={handleDelete} />
         )
       }
@@ -85,7 +76,7 @@ const DashboardPage = () => {
           <ProfileCard />
         )
       }
-        { user?.role === "ROLE_CEO" && editOpen && (
+        {  editOpen && (
                               <AddEditEmployee
                                 open={editOpen}
                                 handleClose={() => setEditOpen(false)}
@@ -94,7 +85,7 @@ const DashboardPage = () => {
                              
                               />
                             )}
-        { user?.role === "ROLE_CEO" && addOpen && (
+        { addOpen && (
                               <AddEditEmployee
                                 open={addOpen}
                                 handleClose={() => setAddOpen(false)}
@@ -104,7 +95,6 @@ const DashboardPage = () => {
 
           { user?.role === "ROLE_CEO" &&  
                          ( <AdminTable 
-                         adminList={adminData}
                          handleDelete={handleAdminDelete}
                          setEditOpen={setEditAdminOpen}
                          setAddOpen={setAddAdminOpen}

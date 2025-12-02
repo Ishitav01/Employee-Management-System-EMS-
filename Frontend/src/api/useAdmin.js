@@ -1,12 +1,17 @@
 import apiInterceptor from "../api/apiInterceptor"; // adjust path if needed
 
-export default function useAdmin() {
-  const base = "http://localhost:8080/api/ceo";
+export const useAdmin = () => {
+  const base = "http://13.210.35.0:8080/api/ceo";
 
-  const createAdmin = async (adminReq) => {
+  const createAdmin = async ({username,email,name,password}) => {
     // adminReq: { name, username, password, email }
     try {
-      const response = await apiInterceptor.post(`${base}/create-admin`, adminReq);
+      const response = await apiInterceptor.post(`${base}/create-admin`, {
+        name,
+        email,
+        password,
+        username
+      });
       // controller returns created admin object (id,name,username,email)
       return { success: true, data: response.data };
     } catch (error) {
@@ -32,10 +37,15 @@ export default function useAdmin() {
     }
   };
 
-  const updateAdmin = async (adminReq) => {
+  const updateAdmin = async ({username,email,name,password}) => {
     // adminReq: { name, username, password, email }
     try {
-      const response = await apiInterceptor.put(`${base}/update-admin`, adminReq);
+      const response = await apiInterceptor.put(`${base}/update-admin`,{
+        name,
+        email,
+        password,
+        username
+      } );
       return { success: true, data: response.data };
     } catch (error) {
       return {

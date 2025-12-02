@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSnackbar } from "../context/SnackbarContext";
 
 const apiInterceptor = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://13.210.35.0:8080/",
 });
 
 apiInterceptor.interceptors.request.use(

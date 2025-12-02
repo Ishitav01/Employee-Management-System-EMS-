@@ -5,7 +5,7 @@ export const useEmployee = () => {
 
     const getAllEmployeesCeo = async () => {
     try {
-      const response = await apiInterceptor.get("http://localhost:8080/api/ceo/all-employees");
+      const response = await apiInterceptor.get("http://13.210.35.0:8080/api/ceo/all-employees");
       return response.data; // return employee list
     } catch (error) {
       return {success : false , data : error.response?.data || "Error fetching employees"};
@@ -13,7 +13,7 @@ export const useEmployee = () => {
   }
   const getAllEmployeesAdmin = async () => {
     try {
-      const response = await apiInterceptor.get("http://localhost:8080/api/admin/employees");
+      const response = await apiInterceptor.get("http://13.210.35.0:8080/api/admin/employees");
       return response.data; // return employee list
     } catch (error) {
       return {success : false , data : error.response?.data || "Error fetching employees"};
@@ -23,7 +23,7 @@ export const useEmployee = () => {
     const addEmployee = async (emp) => {
   try {
     const response = await apiInterceptor.post(
-      "http://localhost:8080/api/admin/employees",emp
+      "http://13.210.35.0:8080/api/admin/employees",emp
     );
 
     return { success: true, data: response.data||"Employee added" };
@@ -42,7 +42,7 @@ export const useEmployee = () => {
       
       console.log("Updating employee in hook:", updatedData);
     const response = await apiInterceptor.put(
-      "http://localhost:8080/api/admin/employees",
+      "http://13.210.35.0:8080/api/admin/employees",
       {
         ...updatedData  
       }
@@ -56,7 +56,7 @@ export const useEmployee = () => {
   }}
     const deleteEmployee = async (id) => {
         try{
-            const response = apiInterceptor.delete("http://localhost:8080/api/admin/employees",{
+            const response = apiInterceptor.delete("http://13.210.35.0:8080/api/admin/employees",{
                 params : {
                   id
                 }
