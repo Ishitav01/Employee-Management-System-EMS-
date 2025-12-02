@@ -130,7 +130,7 @@ export default function Dashboard({ setEditOpen, setAddOpen, setEmployeeData }) 
                             <TableCell>{emp.name}</TableCell>
                             <TableCell>{emp.email}</TableCell>
                             <TableCell>{emp.designation}</TableCell>
-                            <TableCell>{emp.salary.toLocaleString()}</TableCell>
+                            <TableCell>{(emp?.salary ?? '—').toLocaleString?.('en-US') ?? '—'}</TableCell>
                             <TableCell sx={{
                               display: 'flex',
                               flexDirection: 'row',
