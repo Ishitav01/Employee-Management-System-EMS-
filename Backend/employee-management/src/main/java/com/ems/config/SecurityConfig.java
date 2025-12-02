@@ -64,6 +64,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✔ CORS HERE
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/auth/login",
+                                "/auth/register",
+                                "/auth/create-ceo")
+                        .permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/ceo/**").hasRole("CEO")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
