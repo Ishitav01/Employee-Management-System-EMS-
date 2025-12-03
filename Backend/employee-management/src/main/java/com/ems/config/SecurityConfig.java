@@ -89,11 +89,16 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
-                "http://localhost:5173", // React
-                "http://localhost:4200", // Angular
+                "https://teamsphere-steel.vercel.app", // your frontend
+                "https://scraggly-unheavy-galina.ngrok-free.dev",
+                "https://pterylographical-norah-undiscernably.ngrok-free.dev",
+                "http://frontendbucketems.s3-website-ap-southeast-2.amazonaws.com", // your backend domain
+                "http://localhost:5173",
+                "http://localhost:4200",
                 "http://127.0.0.1:3000"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+
         config.setExposedHeaders(List.of("Authorization"));
         config.setAllowCredentials(true);
 
