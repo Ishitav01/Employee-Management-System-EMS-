@@ -4,26 +4,33 @@ import { useLoginContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "../context/SnackbarContext";
 
-export default function ProfileCard({ name, email, designation, salary }) {
-  name = "Parth Jasathy"
-  email = "parth@gmail.com"
-  designation = "Developer"
-  salary = 50000
+export default function ProfileCard() {
+  const [user,setUser] = useState(null);
+
+  const navigate = useNavigate();
+  const {showSnackbar} = useSnackbar();
+
+  const [name,setName ] = useState("");
   const initials =
     name?.split(" ").map((n) => n[0]).join("").toUpperCase() || "?";
 
-    const [user,setUser] = useState(null);
-
-    const navigate = useNavigate();
-    const {showSnackbar} = useSnackbar();
 
   useEffect(() => {
       const userData = JSON.parse(localStorage.getItem("userData") || "null");
-    if (!userData) {
+      console.log(userData);
+      if (!userData) {
       navigate("/");
       showSnackbar("You are not logged in!", "error");
     }
-    setUser(userData);
+    if(userData?.employee){
+      setUser(userData?.employee);
+      setName(userData?.employee?.name);
+    }else{
+      setUser(userData);
+      setName(userData?.name);
+    }
+    
+
   }, [])
 
   return (
