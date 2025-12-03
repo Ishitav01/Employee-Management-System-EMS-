@@ -148,7 +148,7 @@ const visibleRows = useMemo(() => {
                             <TableCell>{emp.name}</TableCell>
                             <TableCell>{emp.email}</TableCell>
                             <TableCell>{emp.designation}</TableCell>
-                            <TableCell>{emp.salary ?  emp?.salary.toLocaleString() : "0"}</TableCell>
+                            <TableCell>{emp.salary?.toLocaleString()||"0"}</TableCell>
                               <TableCell sx={{
                                 display: 'flex',
                                 flexDirection: 'row',
