@@ -27,8 +27,9 @@ apiInterceptor.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       try {
 
+        const BASE_URL = import.meta.env.VITE_BASE_URL;
         const refreshResponse = await axios.get(
-          `${baseURL}/auth/refresh`,
+          `${BASE_URL}/auth/refresh`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
