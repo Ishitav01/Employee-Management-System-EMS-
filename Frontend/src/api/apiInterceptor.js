@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSnackbar } from "../context/SnackbarContext";
 
 const apiInterceptor = axios.create({
-  baseURL: "http://13.210.35.0:8080/",
+  baseURL: import.meta.env.VITE_BASE_URL,
 });
 
 apiInterceptor.interceptors.request.use(
@@ -28,7 +28,7 @@ apiInterceptor.interceptors.response.use(
       try {
 
         const refreshResponse = await axios.get(
-          "http://localhost:8080/auth/refresh",
+          `${baseURL}/auth/refresh`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
