@@ -60,7 +60,7 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
             AppUser user = userService.getByUsername(request.getUsername());
-            Employee emp = emsService.getEmployeeByUserId(user.getId()); // Employee table fetch
+            Employee emp = emsService.getEmployeeById(user.getId()); // Employee table fetch
             String accessToken = jwtUtil.generateAccessToken(user.getUsername());
             String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
 
